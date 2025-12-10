@@ -1,62 +1,26 @@
-/* 전체 헤더 */
 .game-header {
-  width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  background: linear-gradient(90deg, #667eea, #764ba2);
-  padding: 14px 18px;
-  border-radius: 14px;
-  color: white;
-  margin-bottom: 16px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  font-family: "Noto Sans KR", sans-serif;
+  gap: 40px;
+  padding: 15px 0;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: transparent;
 }
 
-/* 각각의 스탯 박스 */
-.stat {
+.game-header-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 80px;
+  font-size: 14px;
+  color: white;
 }
 
-/* 숫자 강조 */
-.stat-value {
+.game-header-item span.value {
   font-size: 20px;
   font-weight: 700;
-  margin-top: 2px;
+  margin-top: 4px;
 }
-
-/* 레이블 */
-.stat-label {
-  font-size: 13px;
-  opacity: 0.85;
-}
-
-/* 아이콘 + 숫자 세트 */
-.stat-icon {
-  font-size: 22px;
-  margin-bottom: 2px;
-}
-
-/* 모바일 최적화 */
-@media (max-width: 480px) {
-  .game-header {
-    padding: 10px 12px;
-    border-radius: 12px;
-  }
-
-  .stat {
-    min-width: 60px;
-  }
-
-  .stat-value {
-    font-size: 17px;
-  }
-
-  .stat-icon {
-    font-size: 20px;
-  }
-}
-
