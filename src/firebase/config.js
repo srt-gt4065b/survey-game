@@ -1,5 +1,4 @@
 // Firebase 설정 파일
-// 김교수님의 Firebase 프로젝트 정보로 교체해주세요!
 import { initializeApp } from 'firebase/app';
 import { getFirestore, enableIndexedDbPersistence } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
@@ -7,7 +6,6 @@ import { getAnalytics, isSupported } from 'firebase/analytics';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  // 🔥 김교수님의 Firebase 프로젝트 설정
   apiKey: "AIzaSyBqp2_7rcy55Et1NkfRMegiLr5eBIt-N-Q",
   authDomain: "ecis-fall2025-survey.firebaseapp.com",
   databaseURL: "https://ecis-fall2025-survey-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -25,7 +23,7 @@ export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
-// ✅ Analytics를 안전하게 초기화 (measurementId 없어도 에러 안남)
+// ✅ Analytics를 안전하게 초기화
 export let analytics = null;
 if (typeof window !== 'undefined') {
   isSupported().then(supported => {
@@ -41,7 +39,7 @@ if (typeof window !== 'undefined') {
   });
 }
 
-// 오프라인 지원 활성화 (학생들이 중간에 나갔다 와도 데이터 보존)
+// 오프라인 지원 활성화
 enableIndexedDbPersistence(db).catch((err) => {
   if (err.code === 'failed-precondition') {
     console.log('오프라인 지원이 이미 다른 탭에서 활성화되어 있습니다.');
