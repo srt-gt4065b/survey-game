@@ -137,4 +137,15 @@ function App() {
   );
 }
 
+import AdminPanel from "./components/AdminPanel";
+
+function App() {
+  return (
+    <>
+      {/* 예시: /admin 으로 들어왔을 때 어드민 화면 */}
+      <AdminPanel />
+    </>
+  );
+}
+
 export default App;
