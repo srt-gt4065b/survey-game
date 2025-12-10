@@ -4,6 +4,7 @@ import { db } from "../firebase/config";
 import useGameStore from "../store/gameStore";
 import QuestionCard from "./QuestionCard";
 import toast from "react-hot-toast";
+import LayoutWrapper from "./LayoutWrapper";
 import "./SurveyGame.css";
 
 const SurveyGame = ({ onComplete }) => {
@@ -16,38 +17,32 @@ const SurveyGame = ({ onComplete }) => {
   const [answers, setAnswers] = useState({});
   const [startTime, setStartTime] = useState(Date.now());
 
-  // 🔥 Firestore Load
+  // Firestore Load
   useEffect(() => {
-    const fetchQuestions = async () => {
+    const load = async () => {
       try {
         setLoading(true);
         const q = query(collection(db, "questions"), orderBy("id"));
         const snap = await getDocs(q);
-        const data = snap.docs.map((doc) => ({ docId: doc.id, ...doc.data() }));
-        setQuestions(data);
+        const list = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
+        setQuestions(list);
 
-        if (data.length > 0) {
-          setCurrentCategory(data[0].category || "General");
-        }
-      } catch (err) {
-        console.error(err);
-        toast.error("설문 문항을 불러오는 중 오류 발생");
+        if (list.length > 0) setCurrentCategory(list[0].category);
       } finally {
         setLoading(false);
         setStartTime(Date.now());
       }
     };
-    fetchQuestions();
+    load();
   }, []);
 
-  // 🔥 카테고리 자동 계산
   const categories = useMemo(
-    () => [...new Set(questions.map((q) => q.category || "General"))],
+    () => [...new Set(questions.map(q => q.category))],
     [questions]
   );
 
   const filteredQuestions = useMemo(
-    () => questions.filter((q) => q.category === currentCategory),
+    () => questions.filter(q => q.category === currentCategory),
     [questions, currentCategory]
   );
 
@@ -59,7 +54,6 @@ const SurveyGame = ({ onComplete }) => {
   const currentQuestion =
     filteredQuestions.length > 0 ? filteredQuestions[currentIndex] : null;
 
-  // 🔥 답변 처리
   const handleAnswer = (value) => {
     if (!currentQuestion) return;
 
@@ -67,26 +61,23 @@ const SurveyGame = ({ onComplete }) => {
     const timeSpent = (now - startTime) / 1000;
 
     const qId = currentQuestion.id;
-    setAnswers((prev) => ({
-      ...prev,
-      [qId]: { value, timeSpent },
-    }));
+    setAnswers(prev => ({ ...prev, [qId]: { value, timeSpent } }));
 
     answerQuestion(timeSpent, "good");
 
-    const nextIndex = currentIndex + 1;
+    const next = currentIndex + 1;
 
-    if (nextIndex < filteredQuestions.length) {
-      setCurrentIndex(nextIndex);
+    if (next < filteredQuestions.length) {
+      setCurrentIndex(next);
       setStartTime(Date.now());
       return;
     }
 
-    toast.success(`📌 ${currentCategory} 완료!`);
+    toast.success(`📌 ${currentCategory} Completed`);
 
     const answeredIds = new Set(Object.keys({ ...answers, [qId]: true }));
-    const remaining = categories.filter((cat) =>
-      questions.some((q) => q.category === cat && !answeredIds.has(q.id))
+    const remaining = categories.filter(cat =>
+      questions.some(q => q.category === cat && !answeredIds.has(q.id))
     );
 
     if (remaining.length > 0) {
@@ -94,41 +85,39 @@ const SurveyGame = ({ onComplete }) => {
       return;
     }
 
-    toast.success("🎉 전체 설문 완료!");
+    toast.success("🎉 All Survey Completed!");
     if (onComplete) onComplete();
   };
 
-  // 🔥 언어 처리
   const language = user?.language || "en";
 
-  if (loading) return <div className="survey-game">Loading...</div>;
-  if (!currentQuestion) return <div className="survey-game">No questions</div>;
+  if (loading) return <LayoutWrapper>Loading…</LayoutWrapper>;
+  if (!currentQuestion) return <LayoutWrapper>No questions available</LayoutWrapper>;
 
-  const formattedQuestion = {
-    text: currentQuestion.text?.[language] || currentQuestion.text?.en || "질문 없음",
-    section: currentQuestion.category || "General",
-    type: currentQuestion.type || "text",
+  const formatted = {
+    text: currentQuestion.text?.[language] || currentQuestion.text?.en,
+    section: currentQuestion.category,
+    type: currentQuestion.type,
     options: currentQuestion.options || [],
-    required: true,
+    required: true
   };
 
   return (
-    <div className="survey-game">
-
-      {/* 📌 상단 진행률 텍스트 UI — 심플/프로 분위기 */}
-      <div className="survey-progress">
-        <span>Section: <strong>{currentCategory}</strong></span>
-        <span>Question {currentIndex + 1} / {filteredQuestions.length}</span>
+    <LayoutWrapper>
+      {/* 🔥 GameHeader 바로 아래 연결되는 "설문 인포 바" */}
+      <div className="survey-info-bar">
+        <div className="info-section">Section: <strong>{currentCategory}</strong></div>
+        <div className="info-progress">Q{currentIndex + 1} / {filteredQuestions.length}</div>
       </div>
 
       <QuestionCard
         key={currentQuestion.id}
-        question={formattedQuestion}
+        question={formatted}
         questionNumber={currentIndex + 1}
         totalQuestions={filteredQuestions.length}
         onAnswer={handleAnswer}
       />
-    </div>
+    </LayoutWrapper>
   );
 };
 
