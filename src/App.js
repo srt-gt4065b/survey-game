@@ -1,14 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import useGameStore from './store/gameStore';
-import GameHeader from './components/GameHeader';  // ✅ 주석 해제
-// import SurveyGame from './components/SurveyGame';
-// import Leaderboard from './components/Leaderboard';
-// import AdminPanel from './components/AdminPanel';
+import GameHeader from './components/GameHeader';
 import WelcomeScreen from './components/WelcomeScreen';
 import { Toaster } from 'react-hot-toast';
 import toast from 'react-hot-toast';
 import Confetti from 'react-confetti';
+
+// 안전한 컴포넌트 import
+let SurveyGame = null;
+let Leaderboard = null;
+let AdminPanel = null;
+
+try {
+  SurveyGame = require('./components/SurveyGame').default;
+} catch (error) {
+  console.error('❌ SurveyGame 로드 실패:', error);
+}
+
+try {
+  Leaderboard = require('./components/Leaderboard').default;
+} catch (error) {
+  console.error('❌ Leaderboard 로드 실패:', error);
+}
+
+try {
+  AdminPanel = require('./components/AdminPanel').default;
+} catch (error) {
+  console.error('❌ AdminPanel 로드 실패:', error);
+}
 
 function App() {
   const { user, gameStats } = useGameStore();
@@ -18,12 +38,6 @@ function App() {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-
-  // 디버깅
-  useEffect(() => {
-    console.log('👤 User:', user);
-    console.log('📊 GameStats:', gameStats);
-  }, [user, gameStats]);
 
   // 윈도우 크기 추적
   useEffect(() => {
@@ -55,24 +69,70 @@ function App() {
     }
   }, [gameStats?.level]);
 
+  // 화면 라우팅
   const renderView = () => {
-    if (currentView === 'welcome') {
-      return <WelcomeScreen onStart={() => {
-        console.log('🚀 Start clicked!');
-        setCurrentView('test');  // 테스트용
-      }} />;
+    try {
+      switch (currentView) {
+        case 'welcome':
+          return <WelcomeScreen onStart={() => setCurrentView('survey')} />;
+
+        case 'survey':
+          if (!SurveyGame) {
+            return (
+              <div style={{ padding: '2rem', textAlign: 'center' }}>
+                <h2>❌ SurveyGame 컴포넌트를 불러올 수 없습니다</h2>
+                <p>파일이 없거나 에러가 있습니다.</p>
+                <button onClick={() => setCurrentView('welcome')}>
+                  처음으로 돌아가기
+                </button>
+              </div>
+            );
+          }
+          return <SurveyGame onComplete={() => setCurrentView('leaderboard')} />;
+
+        case 'leaderboard':
+          if (!Leaderboard) {
+            return (
+              <div style={{ padding: '2rem', textAlign: 'center' }}>
+                <h2>❌ Leaderboard 컴포넌트를 불러올 수 없습니다</h2>
+                <p>파일이 없거나 에러가 있습니다.</p>
+                <button onClick={() => setCurrentView('survey')}>
+                  설문으로 돌아가기
+                </button>
+              </div>
+            );
+          }
+          return <Leaderboard onBack={() => setCurrentView('survey')} />;
+
+        case 'admin':
+          if (!AdminPanel) {
+            return (
+              <div style={{ padding: '2rem', textAlign: 'center' }}>
+                <h2>❌ AdminPanel 컴포넌트를 불러올 수 없습니다</h2>
+                <p>파일이 없거나 에러가 있습니다.</p>
+                <button onClick={() => setCurrentView('survey')}>
+                  설문으로 돌아가기
+                </button>
+              </div>
+            );
+          }
+          return <AdminPanel onBack={() => setCurrentView('survey')} />;
+
+        default:
+          return <WelcomeScreen onStart={() => setCurrentView('survey')} />;
+      }
+    } catch (error) {
+      console.error('🔴 렌더링 에러:', error);
+      return (
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
+          <h2>❌ 에러가 발생했습니다</h2>
+          <p>{error.message}</p>
+          <button onClick={() => setCurrentView('welcome')}>
+            처음으로 돌아가기
+          </button>
+        </div>
+      );
     }
-    
-    // ✅ 테스트: GameHeader가 보이는지 확인
-    return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <h2>게임 화면 테스트</h2>
-        <p>GameHeader가 위에 보이나요?</p>
-        <button onClick={() => setCurrentView('welcome')}>
-          처음으로 돌아가기
-        </button>
-      </div>
-    );
   };
 
   return (
@@ -106,7 +166,7 @@ function App() {
         }}
       />
 
-      {/* ✅ 헤더 테스트 */}
+      {/* 헤더 */}
       {user?.id && currentView !== 'welcome' && (
         <GameHeader />
       )}
@@ -115,6 +175,34 @@ function App() {
       <div className="main-content">
         {renderView()}
       </div>
+
+      {/* 하단 네비게이션 */}
+      {user?.id && currentView !== 'welcome' && (
+        <div className="bottom-nav">
+          <button 
+            className={currentView === 'survey' ? 'active' : ''}
+            onClick={() => setCurrentView('survey')}
+          >
+            📝 설문
+          </button>
+
+          <button 
+            className={currentView === 'leaderboard' ? 'active' : ''}
+            onClick={() => setCurrentView('leaderboard')}
+          >
+            🏆 순위
+          </button>
+
+          {user?.id === 'admin' && (
+            <button 
+              className={currentView === 'admin' ? 'active' : ''}
+              onClick={() => setCurrentView('admin')}
+            >
+              ⚙️ 관리
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
