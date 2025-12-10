@@ -114,7 +114,7 @@ const WelcomeScreen = ({ onStart }) => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
       >
-        {/* 타이틀 */}
+        {/* 타이틀 - 영문화 */}
         <div className="welcome-header">
           <motion.h1
             className="welcome-title"
@@ -122,7 +122,7 @@ const WelcomeScreen = ({ onStart }) => {
             animate={{ y: 0 }}
             transition={{ type: "spring", stiffness: 100 }}
           >
-            🎮 설문 퀘스트 🎮
+            🎮 Survey Quest 🎮
           </motion.h1>
           <motion.p
             className="welcome-subtitle"
@@ -130,11 +130,11 @@ const WelcomeScreen = ({ onStart }) => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
           >
-            대학생 만족도 조사를 게임처럼 즐겨보세요!
+            Enjoy the student satisfaction survey like a game!
           </motion.p>
         </div>
 
-        {/* 게임 특징 */}
+        {/* 게임 특징 - 영문화 */}
         <motion.div
           className="features-grid"
           initial={{ opacity: 0 }}
@@ -143,30 +143,30 @@ const WelcomeScreen = ({ onStart }) => {
         >
           <div className="feature-card">
             <span className="feature-icon">🏆</span>
-            <span className="feature-text">실시간 순위</span>
+            <span className="feature-text">Real-time Ranking</span>
           </div>
           <div className="feature-card">
             <span className="feature-icon">💎</span>
-            <span className="feature-text">보상 획득</span>
+            <span className="feature-text">Earn Rewards</span>
           </div>
           <div className="feature-card">
             <span className="feature-icon">🎯</span>
-            <span className="feature-text">업적 달성</span>
+            <span className="feature-text">Achievements</span>
           </div>
           <div className="feature-card">
             <span className="feature-icon">🔥</span>
-            <span className="feature-text">연속 보너스</span>
+            <span className="feature-text">Streak Bonus</span>
           </div>
         </motion.div>
 
-        {/* 캐릭터 선택 */}
+        {/* 캐릭터 선택 - 영문화 */}
         <motion.div
           className="avatar-section"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
         >
-          <h3>캐릭터 선택</h3>
+          <h3>Choose Your Character</h3>
           <div className="avatar-grid">
             {avatars.map((avatar, index) => (
               <motion.button
@@ -187,7 +187,7 @@ const WelcomeScreen = ({ onStart }) => {
           </div>
         </motion.div>
 
-        {/* 정보 입력 */}
+        {/* 정보 입력 - 영문화 */}
         <motion.div
           className="form-section"
           initial={{ opacity: 0, y: 20 }}
@@ -197,7 +197,7 @@ const WelcomeScreen = ({ onStart }) => {
           <input
             type="text"
             name="name"
-            placeholder="이름"
+            placeholder="Name"
             value={formData.name}
             onChange={handleInputChange}
             className="form-input"
@@ -207,7 +207,7 @@ const WelcomeScreen = ({ onStart }) => {
           <input
             type="text"
             name="studentId"
-            placeholder="학번"
+            placeholder="Student ID"
             value={formData.studentId}
             onChange={handleInputChange}
             className="form-input"
@@ -220,7 +220,7 @@ const WelcomeScreen = ({ onStart }) => {
             onChange={handleInputChange}
             className="form-select"
           >
-            <option value="">학과 선택</option>
+            <option value="">Select Department</option>
             {departments.map((dept, index) => (
               <option key={index} value={dept}>
                 {dept}
@@ -243,7 +243,7 @@ const WelcomeScreen = ({ onStart }) => {
           </select>
         </motion.div>
 
-        {/* 시작 버튼 */}
+        {/* 시작 버튼 - 영문화 */}
         <motion.button
           className="start-button"
           onClick={handleStart}
@@ -253,22 +253,22 @@ const WelcomeScreen = ({ onStart }) => {
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
         >
-          🚀 게임 시작하기
+          🚀 Start Game
         </motion.button>
 
-        {/* 설명 */}
+        {/* 설명 - 영문화 */}
         <motion.div
           className="instructions"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.4 }}
         >
-          <h4>📋 게임 방법</h4>
+          <h4>📋 How to Play</h4>
           <ul>
-            <li>💡 빠른 답변으로 보너스 포인트를 획득하세요</li>
-            <li>🔥 연속 답변으로 콤보 보너스를 받으세요</li>
-            <li>🏆 친구들과 순위를 경쟁하세요</li>
-            <li>💎 업적을 달성하고 보상을 받으세요</li>
+            <li>💡 Earn bonus points for quick answers</li>
+            <li>🔥 Get combo bonuses for consecutive answers</li>
+            <li>🏆 Compete with friends on the leaderboard</li>
+            <li>💎 Complete achievements and receive rewards</li>
           </ul>
         </motion.div>
       </motion.div>
