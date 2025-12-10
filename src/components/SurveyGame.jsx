@@ -4,7 +4,7 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase/config";
 import useGameStore from "../store/gameStore";
 import QuestionCard from "./QuestionCard";
-import LayoutWrapper from "./LayoutWrapper";
+import LayoutWrapper from "./LayoutWrapper.jsx";
 import ChapterComplete from "./ChapterComplete";
 import toast from "react-hot-toast";
 import "./SurveyGame.css";
