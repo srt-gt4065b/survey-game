@@ -19,6 +19,12 @@ function App() {
     height: window.innerHeight,
   });
 
+  // 🔍 디버깅: user와 gameStats 확인
+  useEffect(() => {
+    console.log('👤 User:', user);
+    console.log('📊 GameStats:', gameStats);
+  }, [user, gameStats]);
+
   // 윈도우 크기 추적
   useEffect(() => {
     const handleResize = () => {
@@ -51,21 +57,34 @@ function App() {
 
   // 화면 라우팅
   const renderView = () => {
-    switch (currentView) {
-      case 'welcome':
-        return <WelcomeScreen onStart={() => setCurrentView('survey')} />;
+    try {
+      switch (currentView) {
+        case 'welcome':
+          return <WelcomeScreen onStart={() => setCurrentView('survey')} />;
 
-      case 'survey':
-        return <SurveyGame onComplete={() => setCurrentView('leaderboard')} />;
+        case 'survey':
+          return <SurveyGame onComplete={() => setCurrentView('leaderboard')} />;
 
-      case 'leaderboard':
-        return <Leaderboard onBack={() => setCurrentView('survey')} />;
+        case 'leaderboard':
+          return <Leaderboard onBack={() => setCurrentView('survey')} />;
 
-      case 'admin':
-        return <AdminPanel onBack={() => setCurrentView('survey')} />;
+        case 'admin':
+          return <AdminPanel onBack={() => setCurrentView('survey')} />;
 
-      default:
-        return <WelcomeScreen onStart={() => setCurrentView('survey')} />;
+        default:
+          return <WelcomeScreen onStart={() => setCurrentView('survey')} />;
+      }
+    } catch (error) {
+      console.error('🔴 렌더링 에러:', error);
+      return (
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
+          <h2>에러가 발생했습니다</h2>
+          <p>{error.message}</p>
+          <button onClick={() => setCurrentView('welcome')}>
+            처음으로 돌아가기
+          </button>
+        </div>
+      );
     }
   };
 
