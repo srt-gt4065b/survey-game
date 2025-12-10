@@ -1,4 +1,5 @@
 // Firebase 설정 파일
+// 김교수님의 Firebase 프로젝트 정보
 import { initializeApp } from 'firebase/app';
 import { getFirestore, enableIndexedDbPersistence } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
@@ -23,7 +24,7 @@ export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
-// ✅ Analytics를 안전하게 초기화
+// Analytics를 안전하게 초기화 (measurementId 없어도 에러 안남)
 export let analytics = null;
 if (typeof window !== 'undefined') {
   isSupported().then(supported => {
@@ -39,7 +40,7 @@ if (typeof window !== 'undefined') {
   });
 }
 
-// 오프라인 지원 활성화
+// 오프라인 지원 활성화 (학생들이 중간에 나갔다 와도 데이터 보존)
 enableIndexedDbPersistence(db).catch((err) => {
   if (err.code === 'failed-precondition') {
     console.log('오프라인 지원이 이미 다른 탭에서 활성화되어 있습니다.');
