@@ -55,14 +55,14 @@ const WelcomeScreen = ({ onStart }) => {
     }));
   };
 
-  const handleStart = () => {
+ const handleStart = () => {
     const { name, studentId, department, avatar, language } = formData;
 
     // 🔐 관리자 로그인 (admin / admin)
     if (name === "admin" && studentId === "admin") {
       setUser({
         id: "admin",
-        name: "관리자",
+        name: "Administrator",
         studentId: "admin",
         department: "admin",
         avatar: "🛠️",
@@ -71,14 +71,14 @@ const WelcomeScreen = ({ onStart }) => {
       });
       setLanguage(language);
       resetGame();
-      toast.success("관리자 모드로 로그인되었습니다.");
+      toast.success("Logged in as Administrator.");
       onStart();
       return;
     }
 
     // 일반 학생: 필수값 체크
     if (!name || !studentId || !department) {
-      toast.error("모든 필드를 입력해주세요!");
+      toast.error("Please fill in all fields!");
       return;
     }
 
@@ -94,7 +94,7 @@ const WelcomeScreen = ({ onStart }) => {
     setLanguage(language);
     resetGame();
 
-    toast.success(`환영합니다, ${name}님! 🎮`, {
+    toast.success(`Welcome, ${name}! 🎮`, {
       duration: 3000,
       position: "top-center",
       style: {
@@ -104,6 +104,7 @@ const WelcomeScreen = ({ onStart }) => {
     });
 
     onStart();
+  };
   };
 
   return (
