@@ -160,11 +160,7 @@ const SurveyGame = ({ onComplete }) => {
 
   return (
   <LayoutWrapper progress={progress} chapter={currentCategory}>
-    
-    {/* 🔥 항상 화면 맨 위에 배치 */}
-    <GameHeader />
-
-    <QuestionCard
+     <QuestionCard
       key={currentQuestion.docId}
       question={formatted}
       questionNumber={currentIndex + 1}
