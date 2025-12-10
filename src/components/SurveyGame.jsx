@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import GameHeader from "./GameHeader";   // ← 반드시 여기!
+//import GameHeader from "./GameHeader";   // ← 반드시 여기!
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase/config";
 import useGameStore from "../store/gameStore";
