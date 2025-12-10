@@ -7,10 +7,14 @@ import "./WelcomeScreen.css";
 
 const avatars = ["🎓", "👨‍🎓", "👩‍🎓", "🧑‍🎓", "🦸", "🦹", "🧙", "🧝", "🎯", "🎮", "🎨", "🎭"];
 
+// ✅ 최종 수정!
 const departments = [
-  "경영학과",
-  "글로벌융합비즈니스학과",
-  "AI빅데이터학과",
+  "경영학과 (Management)",
+  "글로벌융합비즈니스학과 (Global Convergence Mgmt.)",
+  "AI빅데이터학과 (AI BigData)",
+  "글로벌호스피탤리티학과 (Global Hotel Mgmt.)",
+  "JCFS (Jungwoo Kim College of Future Studies)",
+  "Others"
 ];
 
 const languages = [
@@ -19,7 +23,7 @@ const languages = [
   { code: "zh", label: "中文" },
   { code: "kk", label: "Қазақша" },
   { code: "uz", label: "Oʻzbekcha" },
-  { code: "bn", label: "বাংলা (beta)" }, // DB엔 영어 문장 들어있음
+  { code: "bn", label: "বাংলা (beta)" },
 ];
 
 const WelcomeScreen = ({ onStart }) => {
