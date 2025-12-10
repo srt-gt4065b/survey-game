@@ -2,6 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './QuestionCard.css';
 
+// Placeholder 예시 제공 함수
+const getPlaceholderForQuestion = (questionText) => {
+  const lowerText = questionText.toLowerCase();
+  
+  if (lowerText.includes('name') || lowerText.includes('이름')) {
+    return 'John Doe';
+  }
+  if (lowerText.includes('email') || lowerText.includes('이메일')) {
+    return 'john@example.com';
+  }
+  if (lowerText.includes('phone') || lowerText.includes('전화')) {
+    return '010-1234-5678';
+  }
+  if (lowerText.includes('age') || lowerText.includes('나이')) {
+    return '25';
+  }
+  if (lowerText.includes('address') || lowerText.includes('주소')) {
+    return '123 Main Street, Seoul';
+  }
+  if (lowerText.includes('comment') || lowerText.includes('의견')) {
+    return 'Please write your thoughts here...';
+  }
+  
+  return 'Type your answer here...';
+};
+
 const QuestionCard = ({ question, questionNumber, totalQuestions, onAnswer }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [timeLeft, setTimeLeft] = useState(30); // 30초 제한
@@ -108,23 +134,24 @@ const QuestionCard = ({ question, questionNumber, totalQuestions, onAnswer }) =>
           </div>
         );
         
-      case 'text':
+     case 'text':
         return (
           <div className="text-input-container">
             <textarea
               className="text-input"
-              placeholder="여기에 답변을 입력하세요..."
+              placeholder={`Example: ${getPlaceholderForQuestion(question.text)}`}
               rows={4}
               onChange={(e) => setSelectedAnswer(e.target.value)}
+              value={selectedAnswer || ''}
             />
             <motion.button
               className="submit-button"
               onClick={() => handleSelect(selectedAnswer)}
-              disabled={!selectedAnswer}
+              disabled={!selectedAnswer || selectedAnswer.trim() === ''}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              제출하기
+              Submit
             </motion.button>
           </div>
         );
@@ -165,10 +192,10 @@ const QuestionCard = ({ question, questionNumber, totalQuestions, onAnswer }) =>
         </div>
       </div>
 
-      {/* 질문 텍스트 */}
+       {/* 질문 텍스트 */}
       <div className="question-text">
         <h2>{question.text}</h2>
-        {question.required && <span className="required-badge">필수</span>}
+        {question.required && <span className="required-badge">Required</span>}
       </div>
 
       {/* 답변 옵션 */}
@@ -176,9 +203,9 @@ const QuestionCard = ({ question, questionNumber, totalQuestions, onAnswer }) =>
         {renderQuestionContent()}
       </div>
 
-      {/* 힌트 또는 팁 */}
+      {/* 힌트 또는 팁 - 영문화 */}
       <div className="question-hint">
-        💡 빠르고 정확한 답변으로 보너스 포인트를 획득하세요!
+        💡 Answer quickly and accurately to earn bonus points!
       </div>
     </motion.div>
   );
