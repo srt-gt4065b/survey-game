@@ -1,316 +1,275 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Papa from 'papaparse';
-import useGameStore from '../store/gameStore';
-import { db } from '../firebase/config';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import toast from 'react-hot-toast';
-import QuestionCard from './QuestionCard';
-import ChapterComplete from './ChapterComplete';
-import './SurveyGame.css';
+// src/components/SurveyGame.js
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import useGameStore from "../store/gameStore";
+import { db } from "../firebase/config";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
+import toast from "react-hot-toast";
+import QuestionCard from "./QuestionCard";
+import ChapterComplete from "./ChapterComplete";
+import "./SurveyGame.css";
 
 const SurveyGame = ({ onComplete }) => {
-  const { 
-    user, 
-    gameStats, 
-    answerQuestion, 
+  const {
+    user,
+    gameStats,
+    answerQuestion,
     updateStreak,
     completeChapter,
-    unlockAchievement 
+    unlockAchievement,
+    showAnswerFeedback,
   } = useGameStore();
-  
+
   const [questions, setQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [currentQ, setCurrentQ] = useState(null);
   const [responses, setResponses] = useState({});
-  const [questionStartTime, setQuestionStartTime] = useState(Date.now());
-  const [showChapterComplete, setShowChapterComplete] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [startTime, setStartTime] = useState(Date.now());
+  const [loading, setLoading] = useState(true);
+  const [showChapter, setShowChapter] = useState(false);
 
-  // CSV 파일 업로드 처리
-  const handleCSVUpload = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    Papa.parse(file, {
-      header: true,
-      complete: (results) => {
-        const parsedQuestions = results.data.map((row, index) => ({
-          id: `q${index + 1}`,
-          section: row.section || `챕터 ${Math.floor(index / 15) + 1}`,
-          text: row.question_text || row.question,
-          type: row.type || 'likert',
-          required: row.required === 'yes' || row.required === 'true',
-          options: row.options ? row.options.split('|') : getDefaultOptions(row.type),
-        }));
-        
-        setQuestions(parsedQuestions);
-        toast.success(`${parsedQuestions.length}개 질문 로드 완료!`);
-        
-        // 첫 질문 설정
-        if (parsedQuestions.length > 0) {
-          setCurrentQuestion(parsedQuestions[0]);
-          setQuestionStartTime(Date.now());
-        }
-      },
-      error: (error) => {
-        toast.error('CSV 파일 로드 실패: ' + error.message);
-      }
-    });
-  };
-
-  // 기본 옵션 반환
-  const getDefaultOptions = (type) => {
+  // 기본 옵션
+  const defaultOptions = (type) => {
     switch (type) {
-      case 'likert':
-        return ['매우 불만족', '불만족', '보통', '만족', '매우 만족'];
-      case 'yesno':
-        return ['예', '아니오'];
-      case 'frequency':
-        return ['전혀 안함', '가끔', '보통', '자주', '매우 자주'];
+      case "likert":
+        return ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"];
+      case "frequency":
+        return ["Never", "Rarely", "Sometimes", "Often", "Very Often"];
       default:
         return [];
     }
   };
 
-  // 샘플 질문 로드 (CSV 없을 때)
-  useEffect(() => {
-    if (questions.length === 0) {
-      loadSampleQuestions();
-    }
-  }, []);
-
-  const loadSampleQuestions = () => {
-    const sampleQuestions = [
-      {
-        id: 'sample1',
-        section: '학업 만족도',
-        text: '수업 내용의 질에 대해 어떻게 평가하십니까?',
-        type: 'likert',
-        required: true,
-        options: ['매우 불만족', '불만족', '보통', '만족', '매우 만족'],
-      },
-      {
-        id: 'sample2',
-        section: '학업 만족도',
-        text: '교수진의 강의 방식에 만족하십니까?',
-        type: 'likert',
-        required: true,
-        options: ['매우 불만족', '불만족', '보통', '만족', '매우 만족'],
-      },
-      {
-        id: 'sample3',
-        section: '학업 만족도',
-        text: '과제량은 적절하다고 생각하십니까?',
-        type: 'likert',
-        required: true,
-        options: ['너무 적음', '적음', '적절', '많음', '너무 많음'],
-      },
-      // ... 더 많은 샘플 질문 추가 가능
-    ];
-    
-    setQuestions(sampleQuestions);
-    setCurrentQuestion(sampleQuestions[0]);
+  // 숫자 기준 정렬
+  const orderFromId = (id) => {
+    const m = String(id).match(/\d+/);
+    return m ? parseInt(m[0], 10) : 9999;
   };
 
-  // 답변 처리
-  const handleAnswer = async (answer) => {
-    if (!currentQuestion) return;
-    
-    // 시간 계산
-    const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
-    
-    // 응답 저장
-    const newResponses = {
-      ...responses,
-      [currentQuestion.id]: {
-        answer,
-        timeSpent,
-        timestamp: Date.now(),
+  // ===========================
+  // Firestore에서 문항 읽기
+  // ===========================
+  useEffect(() => {
+    const loadQuestions = async () => {
+      try {
+        setLoading(true);
+
+        const q = query(collection(db, "questions"));
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+          toast.error("❌ Firestore에 설문 문항이 없습니다.");
+          setLoading(false);
+          return;
+        }
+
+        const lang = user.language || "en";
+
+        const data = snap.docs
+          .map((d) => {
+            const row = d.data();
+            const pack = row.text || {};
+
+            const text =
+              pack[lang] ||
+              pack["en"] ||
+              "(No text for selected language)";
+
+            return {
+              id: row.id || d.id,
+              section: row.category || "Survey",
+              text,
+              type: row.type || "likert",
+              required: true,
+              options:
+                Array.isArray(row.options) && row.options.length > 0
+                  ? row.options
+                  : defaultOptions(row.type),
+            };
+          })
+          .sort((a, b) => orderFromId(a.id) - orderFromId(b.id));
+
+        setQuestions(data);
+        setCurrentIdx(0);
+        setCurrentQ(data[0]);
+        setStartTime(Date.now());
+
+        toast.success(`📥 ${data.length}개 설문 문항 불러왔습니다.`);
+      } catch (err) {
+        console.error(err);
+        toast.error("문항을 불러오는 중 오류 발생");
+      } finally {
+        setLoading(false);
       }
     };
-    setResponses(newResponses);
-    
-    // 게임 포인트 계산
-    const quality = answer ? 'good' : 'poor';
-    const result = answerQuestion(timeSpent, quality);
-    
-    // 연속 답변 업데이트
-    updateStreak(true);
-    
-    // 첫 답변 업적
-    if (gameStats.questionsAnswered === 0) {
-      unlockAchievement('FIRST_ANSWER');
-    }
-    
-    // 피드백 표시
-    showAnswerFeedback(result.points, result.leveledUp);
-    
-    // Firebase에 응답 저장
-    if (user.id) {
-      saveResponseToFirebase(currentQuestion.id, answer, timeSpent);
-    }
-    
-    // 다음 질문으로
-    moveToNextQuestion();
-  };
 
-  // 답변 피드백 애니메이션
-  const showAnswerFeedback = (points, leveledUp) => {
-    toast.success(
-      <div className="answer-feedback">
-        <span className="points-gained">+{points} XP</span>
-        {gameStats.streak > 1 && (
-          <span className="streak-bonus">🔥 연속 {gameStats.streak}개!</span>
-        )}
-      </div>,
-      {
-        duration: 2000,
-        position: 'bottom-center',
-        style: {
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
-        },
-      }
-    );
-  };
+    loadQuestions();
+  }, [user.language]);
 
-  // Firebase에 응답 저장
-  const saveResponseToFirebase = async (questionId, answer, timeSpent) => {
+  // ===========================
+  // 응답 Firebase 저장
+  // ===========================
+  const saveResponse = async (qid, answer, spent) => {
     try {
-      await addDoc(collection(db, 'responses'), {
+      await addDoc(collection(db, "responses"), {
         userId: user.id,
-        surveyId: 'satisfaction_2024',
-        questionId,
+        userName: user.name,
+        department: user.department,
+        surveyId: "satisfaction_2025",
+        questionId: qid,
         answer,
-        timeSpent,
+        timeSpent: spent,
         timestamp: serverTimestamp(),
       });
-    } catch (error) {
-      console.error('응답 저장 실패:', error);
+    } catch (e) {
+      console.error("응답 저장 실패:", e);
     }
   };
 
-  // 다음 질문으로 이동
-  const moveToNextQuestion = () => {
-    const nextIndex = currentQuestionIndex + 1;
-    
-    // 챕터 완료 체크 (15문제마다)
-    if (nextIndex % 15 === 0 && nextIndex !== 0) {
-      const chapterNumber = Math.floor(nextIndex / 15);
-      completeChapter(chapterNumber);
-      setShowChapterComplete(true);
-      
-      setTimeout(() => {
-        setShowChapterComplete(false);
-        proceedToNextQuestion(nextIndex);
-      }, 3000);
-    } else if (nextIndex < questions.length) {
-      proceedToNextQuestion(nextIndex);
-    } else {
-      // 설문 완료
-      handleSurveyComplete();
-    }
-  };
+  // ===========================
+  // 설문 완료 저장
+  // ===========================
+  const finishSurvey = async () => {
+    unlockAchievement("COMPLETIONIST");
 
-  const proceedToNextQuestion = (nextIndex) => {
-    setCurrentQuestionIndex(nextIndex);
-    setCurrentQuestion(questions[nextIndex]);
-    setQuestionStartTime(Date.now());
-  };
+    const total = questions.length;
+    const totalTime = Object.values(responses).reduce(
+      (s, r) => s + r.timeSpent,
+      0
+    );
 
-  // 설문 완료 처리
-  const handleSurveyComplete = async () => {
-    toast.success('🎉 모든 설문을 완료했습니다!', {
-      duration: 5000,
-      position: 'top-center',
-    });
-    
-    unlockAchievement('COMPLETIONIST');
-    
-    // 완료 데이터 Firebase 저장
     if (user.id) {
-      await addDoc(collection(db, 'completions'), {
+      await addDoc(collection(db, "completions"), {
         userId: user.id,
-        surveyId: 'satisfaction_2024',
-        totalPoints: gameStats.totalPoints,
-        level: gameStats.level,
+        userName: user.name,
+        department: user.department,
+        surveyId: "satisfaction_2025",
+        totalQuestions: total,
+        totalTime,
+        avgTime: total ? totalTime / total : 0,
         completedAt: serverTimestamp(),
-        responses,
       });
     }
-    
+
+    toast.success("🎉 모든 설문을 완료했습니다!");
     onComplete();
   };
 
-  return (
-    <div className="survey-game-container">
-      {/* CSV 업로드 섹션 */}
-      {questions.length === 0 && (
-        <motion.div 
-          className="csv-upload-section"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          <h2>📁 질문 파일 업로드</h2>
-          <p>CSV 또는 JSON 파일로 질문을 일괄 업로드하세요</p>
-          <input
-            type="file"
-            accept=".csv,.json"
-            onChange={handleCSVUpload}
-            className="file-input"
-            id="csv-upload"
-          />
-          <label htmlFor="csv-upload" className="file-label">
-            파일 선택
-          </label>
-          <div className="sample-format">
-            <h4>CSV 형식 예시:</h4>
-            <code>
-              section,question_text,type,required,options<br/>
-              학업,수업 만족도,likert,yes,매우불만족|불만족|보통|만족|매우만족
-            </code>
-          </div>
-        </motion.div>
-      )}
+  // ===========================
+  // 다음 문항 이동
+  // ===========================
+  const goNext = () => {
+    const nextIndex = currentIdx + 1;
 
-      {/* 질문 카드 */}
-      {currentQuestion && !showChapterComplete && (
+    // 15문항마다 챕터 완료 연출
+    if (nextIndex % 15 === 0 && nextIndex < questions.length) {
+      completeChapter(Math.floor(nextIndex / 15));
+      setShowChapter(true);
+
+      setTimeout(() => {
+        setShowChapter(false);
+        move(nextIndex);
+      }, 2600);
+      return;
+    }
+
+    if (nextIndex >= questions.length) {
+      finishSurvey();
+      return;
+    }
+
+    move(nextIndex);
+  };
+
+  // 문항 셋팅
+  const move = (i) => {
+    setCurrentIdx(i);
+    setCurrentQ(questions[i]);
+    setStartTime(Date.now());
+  };
+
+  // ===========================
+  // 답변 처리
+  // ===========================
+  const handleAnswer = async (answer) => {
+    if (!currentQ) return;
+
+    const spent = Math.floor((Date.now() - startTime) / 1000);
+
+    // response 기록
+    const newResp = {
+      ...responses,
+      [currentQ.id]: {
+        answer,
+        timeSpent: spent,
+        timestamp: Date.now(),
+      },
+    };
+    setResponses(newResp);
+
+    // 게임 포인트 반영
+    const quality = answer ? "good" : "bad";
+    const res = answerQuestion(spent, quality);
+
+    updateStreak(true);
+    showAnswerFeedback(res.points, res.leveledUp);
+
+    // DB 기록
+    if (user.id) {
+      await saveResponse(currentQ.id, answer, spent);
+    }
+
+    goNext();
+  };
+
+  // ===========================
+  // UI
+  // ===========================
+  if (loading) return <div className="survey-game">문항 불러오는 중…</div>;
+  if (!currentQ)
+    return <div className="survey-game">표시할 문항이 없습니다.</div>;
+
+  return (
+    <div className="survey-game">
+      {/* 진행바 */}
+      <div className="survey-progress">
+        <div className="progress-bar">
+          <motion.div
+            className="progress-bar-fill"
+            initial={{ width: 0 }}
+            animate={{
+              width: `${((currentIdx + 1) / questions.length) * 100}%`,
+            }}
+            transition={{ duration: 0.4 }}
+          />
+        </div>
+        <div className="progress-text">
+          {currentIdx + 1} / {questions.length} 문항
+        </div>
+      </div>
+
+      {/* 문항 표시 */}
+      <div className="survey-content">
         <AnimatePresence mode="wait">
           <QuestionCard
-            key={currentQuestion.id}
-            question={currentQuestion}
-            questionNumber={currentQuestionIndex + 1}
+            key={currentQ.id}
+            question={currentQ}
+            questionNumber={currentIdx + 1}
             totalQuestions={questions.length}
             onAnswer={handleAnswer}
           />
         </AnimatePresence>
-      )}
-
-      {/* 챕터 완료 화면 */}
-      {showChapterComplete && (
-        <ChapterComplete 
-          chapterNumber={Math.floor(currentQuestionIndex / 15)}
-          points={gameStats.totalPoints}
-        />
-      )}
-
-      {/* 진행 상태 바 (하단) */}
-      <div className="progress-footer">
-        <div className="progress-bar-container">
-          <motion.div 
-            className="progress-bar-fill"
-            initial={{ width: 0 }}
-            animate={{ 
-              width: `${(currentQuestionIndex / questions.length) * 100}%` 
-            }}
-            transition={{ duration: 0.5 }}
-          />
-        </div>
-        <div className="progress-text">
-          {currentQuestionIndex + 1} / {questions.length} 문항
-        </div>
       </div>
+
+      {showChapter && (
+        <ChapterComplete chapterNumber={Math.floor(currentIdx / 15)} />
+      )}
     </div>
   );
 };
