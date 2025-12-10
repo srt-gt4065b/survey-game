@@ -17,14 +17,10 @@ const WelcomeScreen = ({ onStart }) => {
   const avatars = ['🎓', '👨‍🎓', '👩‍🎓', '🧑‍🎓', '🦸', '🦹', '🧙', '🧝', '🎯', '🎮', '🎨', '🎭'];
   
   const departments = [
-    'AI경영학과',
-    '컴퓨터공학과',
-    '소프트웨어학과',
     '경영학과',
-    '국제경영학과',
-    '미디어디자인학과',
-    '건축학과',
-    '간호학과',
+    '글로벌융합비즈니스학과',
+    'AI빅데이터학과',
+    '글로벌호스피텔리티학과',
   ];
 
   const handleInputChange = (e) => {
@@ -45,10 +41,23 @@ const WelcomeScreen = ({ onStart }) => {
 
   const handleStart = () => {
     // 유효성 검사
-    if (!formData.name || !formData.studentId || !formData.department) {
-      toast.error('모든 필드를 입력해주세요!');
-      return;
-    }
+    // 🔐 admin 계정은 major 없이 로그인 허용
+if (name === "admin" && studentId === "admin") {
+    useGameStore.getState().setUser({
+        id: "admin",
+        name: "관리자",
+        major: "admin"
+    });
+    onStart();
+    return;
+}
+
+// 일반 학생은 모든 필수값 필요
+if (!name || !studentId || !major) {
+    toast.error("모든 필드를 입력해주세요!");
+    return;
+}
+
 
     // 사용자 정보 저장
     setUser({
