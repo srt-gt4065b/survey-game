@@ -1,6 +1,5 @@
-<GameHeader />
-import GameHeader from "./GameHeader";
 import React, { useEffect, useMemo, useState } from "react";
+import GameHeader from "./GameHeader";   // ← 반드시 여기!
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase/config";
 import useGameStore from "../store/gameStore";
@@ -9,6 +8,7 @@ import LayoutWrapper from "./LayoutWrapper";
 import ChapterComplete from "./ChapterComplete";
 import toast from "react-hot-toast";
 import "./SurveyGame.css";
+
 
 const SurveyGame = ({ onComplete }) => {
   const { user, answerQuestion, gameStats } = useGameStore();
@@ -168,6 +168,7 @@ const SurveyGame = ({ onComplete }) => {
         onAnswer={handleAnswer}
       />
     </LayoutWrapper>
+    <GameHeader />
   );
 };
 
