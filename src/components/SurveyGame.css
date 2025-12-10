@@ -10,3 +10,16 @@
   font-weight: 600;
   backdrop-filter: blur(4px);
 }
+.survey-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.loading-screen {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #666;
+}
