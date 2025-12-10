@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import useGameStore from './store/gameStore';
-import GameHeader from './components/GameHeader';
-import SurveyGame from './components/SurveyGame';
-import Leaderboard from './components/Leaderboard';
-import AdminPanel from './components/AdminPanel';
+// import GameHeader from './components/GameHeader';
+// import SurveyGame from './components/SurveyGame';
+// import Leaderboard from './components/Leaderboard';
+// import AdminPanel from './components/AdminPanel';
 import WelcomeScreen from './components/WelcomeScreen';
 import { Toaster } from 'react-hot-toast';
 import toast from 'react-hot-toast';
@@ -19,7 +19,7 @@ function App() {
     height: window.innerHeight,
   });
 
-  // 🔍 디버깅: user와 gameStats 확인
+  // 디버깅
   useEffect(() => {
     console.log('👤 User:', user);
     console.log('📊 GameStats:', gameStats);
@@ -55,37 +55,12 @@ function App() {
     }
   }, [gameStats?.level]);
 
-  // 화면 라우팅
+  // 🔍 테스트: 일단 WelcomeScreen만 렌더링
   const renderView = () => {
-    try {
-      switch (currentView) {
-        case 'welcome':
-          return <WelcomeScreen onStart={() => setCurrentView('survey')} />;
-
-        case 'survey':
-          return <SurveyGame onComplete={() => setCurrentView('leaderboard')} />;
-
-        case 'leaderboard':
-          return <Leaderboard onBack={() => setCurrentView('survey')} />;
-
-        case 'admin':
-          return <AdminPanel onBack={() => setCurrentView('survey')} />;
-
-        default:
-          return <WelcomeScreen onStart={() => setCurrentView('survey')} />;
-      }
-    } catch (error) {
-      console.error('🔴 렌더링 에러:', error);
-      return (
-        <div style={{ padding: '2rem', textAlign: 'center' }}>
-          <h2>에러가 발생했습니다</h2>
-          <p>{error.message}</p>
-          <button onClick={() => setCurrentView('welcome')}>
-            처음으로 돌아가기
-          </button>
-        </div>
-      );
-    }
+    return <WelcomeScreen onStart={() => {
+      console.log('🚀 Start clicked!');
+      setCurrentView('survey');
+    }} />;
   };
 
   return (
@@ -119,47 +94,10 @@ function App() {
         }}
       />
 
-      {/* 헤더 */}
-      {user?.id && currentView !== 'welcome' && (
-        <GameHeader 
-          onViewChange={setCurrentView}
-          currentView={currentView}
-        />
-      )}
-
       {/* 메인 화면 */}
       <div className="main-content">
         {renderView()}
       </div>
-
-      {/* 하단 네비게이션 */}
-      {user?.id && currentView !== 'welcome' && (
-        <div className="bottom-nav">
-          <button 
-            className={currentView === 'survey' ? 'active' : ''}
-            onClick={() => setCurrentView('survey')}
-          >
-            📝 설문
-          </button>
-
-          <button 
-            className={currentView === 'leaderboard' ? 'active' : ''}
-            onClick={() => setCurrentView('leaderboard')}
-          >
-            🏆 순위
-          </button>
-
-          {/* admin 계정만 관리 버튼 표시 */}
-          {user?.id === 'admin' && (
-            <button 
-              className={currentView === 'admin' ? 'active' : ''}
-              onClick={() => setCurrentView('admin')}
-            >
-              ⚙️ 관리
-            </button>
-          )}
-        </div>
-      )}
     </div>
   );
 }
