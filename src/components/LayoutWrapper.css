@@ -1,0 +1,15 @@
+.layout-container {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #5e60ce, #7400b8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.layout-content {
+  width: 100%;
+  max-width: 900px;
+  margin-top: 20px;      /* GameHeader와 SurveyGame 간격 */
+  padding: 10px 20px;
+}
