@@ -33,7 +33,7 @@ function App() {
 
   // 레벨업 시 축하 효과
   useEffect(() => {
-    if (gameStats.level > 1) {
+    if (gameStats?.level > 1) {
       setShowConfetti(true);
       toast.success(`🎉 레벨 ${gameStats.level} 달성!`, {
         duration: 4000,
@@ -47,7 +47,7 @@ function App() {
       });
       setTimeout(() => setShowConfetti(false), 5000);
     }
-  }, [gameStats.level]);
+  }, [gameStats?.level]);
 
   // 화면 라우팅
   const renderView = () => {
@@ -101,7 +101,7 @@ function App() {
       />
 
       {/* 헤더 */}
-      {user.id && currentView !== 'welcome' && (
+      {user?.id && currentView !== 'welcome' && (
         <GameHeader 
           onViewChange={setCurrentView}
           currentView={currentView}
@@ -114,7 +114,7 @@ function App() {
       </div>
 
       {/* 하단 네비게이션 */}
-      {user.id && currentView !== 'welcome' && (
+      {user?.id && currentView !== 'welcome' && (
         <div className="bottom-nav">
           <button 
             className={currentView === 'survey' ? 'active' : ''}
@@ -131,7 +131,7 @@ function App() {
           </button>
 
           {/* admin 계정만 관리 버튼 표시 */}
-          {user.id === 'admin' && (
+          {user?.id === 'admin' && (
             <button 
               className={currentView === 'admin' ? 'active' : ''}
               onClick={() => setCurrentView('admin')}
