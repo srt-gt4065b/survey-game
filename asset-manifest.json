@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/survey-game/static/css/main.2cd5b05a.css",
+    "main.js": "/survey-game/static/js/main.832287ac.js",
+    "index.html": "/survey-game/index.html",
+    "main.2cd5b05a.css.map": "/survey-game/static/css/main.2cd5b05a.css.map",
+    "main.832287ac.js.map": "/survey-game/static/js/main.832287ac.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2cd5b05a.css",
+    "static/js/main.832287ac.js"
+  ]
+}
