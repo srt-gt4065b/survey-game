@@ -172,7 +172,7 @@ const SurveyGame = ({ onComplete }) => {
     required: true
   };
 
-  return (
+ return (
     <div className="survey-game">
       {/* 카테고리 탭 */}
       <div className="category-tabs">
@@ -190,13 +190,13 @@ const SurveyGame = ({ onComplete }) => {
         ))}
       </div>
 
-      {/* 진행 상황 */}
+      {/* 진행 상황 - 영문화 */}
       <div className="survey-progress">
         <span>
-          섹션: <strong>{currentCategory}</strong>
+          Section: <strong>{currentCategory}</strong>
         </span>
         <span>
-          문항 {currentIndex + 1} / {filteredQuestions.length}
+          Question {currentIndex + 1} / {filteredQuestions.length}
         </span>
       </div>
 
