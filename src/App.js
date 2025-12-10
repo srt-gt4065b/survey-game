@@ -12,14 +12,14 @@ import Confetti from 'react-confetti';
 
 function App() {
   const { user, gameStats } = useGameStore();
-  const [currentView, setCurrentView] = useState('welcome'); // welcome, survey, leaderboard, admin
+  const [currentView, setCurrentView] = useState('welcome'); 
   const [showConfetti, setShowConfetti] = useState(false);
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
-  // 윈도우 크기 추적 (confetti 효과용)
+  // 윈도우 크기 추적
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
@@ -49,16 +49,21 @@ function App() {
     }
   }, [gameStats.level]);
 
+  // 화면 라우팅
   const renderView = () => {
     switch (currentView) {
       case 'welcome':
         return <WelcomeScreen onStart={() => setCurrentView('survey')} />;
+
       case 'survey':
         return <SurveyGame onComplete={() => setCurrentView('leaderboard')} />;
+
       case 'leaderboard':
         return <Leaderboard onBack={() => setCurrentView('survey')} />;
+
       case 'admin':
         return <AdminPanel onBack={() => setCurrentView('survey')} />;
+
       default:
         return <WelcomeScreen onStart={() => setCurrentView('survey')} />;
     }
@@ -95,7 +100,7 @@ function App() {
         }}
       />
 
-      {/* 게임 헤더 (상태바) */}
+      {/* 헤더 */}
       {user.id && currentView !== 'welcome' && (
         <GameHeader 
           onViewChange={setCurrentView}
@@ -103,12 +108,12 @@ function App() {
         />
       )}
 
-      {/* 메인 콘텐츠 */}
+      {/* 메인 화면 */}
       <div className="main-content">
         {renderView()}
       </div>
 
-      {/* 하단 네비게이션 (모바일) */}
+      {/* 하단 네비게이션 */}
       {user.id && currentView !== 'welcome' && (
         <div className="bottom-nav">
           <button 
@@ -117,12 +122,15 @@ function App() {
           >
             📝 설문
           </button>
+
           <button 
             className={currentView === 'leaderboard' ? 'active' : ''}
             onClick={() => setCurrentView('leaderboard')}
           >
             🏆 순위
           </button>
+
+          {/* admin 계정만 관리 버튼 표시 */}
           {user.id === 'admin' && (
             <button 
               className={currentView === 'admin' ? 'active' : ''}
@@ -134,17 +142,6 @@ function App() {
         </div>
       )}
     </div>
-  );
-}
-
-import AdminPanel from "./components/AdminPanel";
-
-function App() {
-  return (
-    <>
-      {/* 예시: /admin 으로 들어왔을 때 어드민 화면 */}
-      <AdminPanel />
-    </>
   );
 }
 
