@@ -1,47 +1,147 @@
 /* Header 전체 컨테이너 */
 .game-header {
   width: 100%;
-  display: flex;
-  justify-content: center;       /* 가운데 정렬 */
-  gap: 60px;                     /* 항목 간 간격 */
-  padding: 20px 0;
-  position: sticky;
-  top: 0;
-  z-index: 999;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   color: white;
   font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 사용자 정보 섹션 */
+.user-info-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 16px;
+}
+
+.user-avatar {
+  font-size: 40px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+}
+
+.user-details {
+  flex: 1;
+}
+
+.user-name {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.user-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.user-dept {
+  padding-left: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* 전체 진행률 섹션 */
+.overall-progress-section {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.progress-text {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #fbbf24;
+  transition: width 0.5s ease;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.5);
+}
+
+/* 게임 스탯 행 */
+.stats-row {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
 }
 
 /* 개별 스탯 박스 */
 .stat-box {
   display: flex;
-  flex-direction: column;        /* 아이콘 위, 숫자 아래 */
+  flex-direction: column;
   align-items: center;
-  font-size: 18px;
+  gap: 4px;
 }
 
-/* 아이콘 */
 .stat-icon {
-  font-size: 30px;
-  margin-bottom: 5px;
+  font-size: 28px;
 }
 
-/* 텍스트 스타일 */
 .stat-value {
   font-weight: 700;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .stat-label {
-  font-size: 13px;
+  font-size: 12px;
   opacity: 0.8;
 }
 
 /* 모바일 최적화 */
 @media (max-width: 480px) {
   .game-header {
-    gap: 30px;
-    padding: 12px 0;
+    padding: 16px;
+  }
+
+  .user-avatar {
+    font-size: 32px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .user-name {
+    font-size: 18px;
+  }
+
+  .user-meta {
+    font-size: 11px;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .user-dept {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .stats-row {
+    gap: 8px;
   }
 
   .stat-icon {
@@ -53,6 +153,6 @@
   }
 
   .stat-label {
-    font-size: 12px;
+    font-size: 11px;
   }
 }
