@@ -166,11 +166,7 @@ function App() {
         }}
       />
 
-      {/* 헤더 */}
-      {user?.id && currentView !== 'welcome' && (
-        <GameHeader />
-      )}
-
+     
       {/* 메인 화면 */}
       <div className="main-content">
         {renderView()}
