@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import useGameStore from './store/gameStore';
-// import GameHeader from './components/GameHeader';
+import GameHeader from './components/GameHeader';  // ✅ 주석 해제
 // import SurveyGame from './components/SurveyGame';
 // import Leaderboard from './components/Leaderboard';
 // import AdminPanel from './components/AdminPanel';
@@ -55,12 +55,24 @@ function App() {
     }
   }, [gameStats?.level]);
 
-  // 🔍 테스트: 일단 WelcomeScreen만 렌더링
   const renderView = () => {
-    return <WelcomeScreen onStart={() => {
-      console.log('🚀 Start clicked!');
-      setCurrentView('survey');
-    }} />;
+    if (currentView === 'welcome') {
+      return <WelcomeScreen onStart={() => {
+        console.log('🚀 Start clicked!');
+        setCurrentView('test');  // 테스트용
+      }} />;
+    }
+    
+    // ✅ 테스트: GameHeader가 보이는지 확인
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        <h2>게임 화면 테스트</h2>
+        <p>GameHeader가 위에 보이나요?</p>
+        <button onClick={() => setCurrentView('welcome')}>
+          처음으로 돌아가기
+        </button>
+      </div>
+    );
   };
 
   return (
@@ -93,6 +105,11 @@ function App() {
           },
         }}
       />
+
+      {/* ✅ 헤더 테스트 */}
+      {user?.id && currentView !== 'welcome' && (
+        <GameHeader />
+      )}
 
       {/* 메인 화면 */}
       <div className="main-content">
