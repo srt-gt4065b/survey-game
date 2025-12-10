@@ -42,7 +42,7 @@ const WelcomeScreen = ({ onStart }) => {
   const handleStart = () => {
   const { name, studentId, department } = formData;
 
-  // 🔐 1) admin 계정 예외 처리 (학과 선택 불필요)
+  // 🔐 1) 관리자(admin) 예외 처리 — 학과 없이 로그인 허용
   if (name === "admin" && studentId === "admin") {
     setUser({
       id: "admin",
@@ -62,7 +62,7 @@ const WelcomeScreen = ({ onStart }) => {
     return;
   }
 
-  // 🔎 2) 일반 학생 입력 검증
+  // 🔎 2) 일반 사용자 검증
   if (!name || !studentId || !department) {
     toast.error("모든 필드를 입력해주세요!");
     return;
@@ -83,13 +83,14 @@ const WelcomeScreen = ({ onStart }) => {
     duration: 3000,
     position: "top-center",
     style: {
-      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      color: "white",
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      color: 'white',
     },
   });
 
   onStart();
 };
+
 
 
   return (
