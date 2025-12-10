@@ -42,6 +42,7 @@ const useGameStore = create((set, get) => ({
     combo: 0,
     highestCombo: 0,
     chapter: 1,
+    coins: 0, 
   },
 
   // 게임 초기화
@@ -55,6 +56,7 @@ const useGameStore = create((set, get) => ({
         combo: 0,
         highestCombo: 0,
         chapter: 1,
+        
       },
     })),
 
