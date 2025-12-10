@@ -43,6 +43,7 @@ const useGameStore = create((set, get) => ({
   },
 
   // 경험치 / 코인 / 질문 카운트 로직
+ // 경험치 / 코인 / 질문 카운트 로직
   answerQuestion: (timeSpent, quality) => {
     const stats = get().gameStats;
     let exp = 10;
@@ -61,10 +62,15 @@ const useGameStore = create((set, get) => ({
       coins += 1;
     }
 
-    const newExp = stats.experience + exp;
+    let newExp = stats.experience + exp;
     const newCoins = stats.coins + coins;
+    let newLevel = stats.level;
 
-    const levelUp = newExp >= stats.level * 100;
+    // ✅ 레벨업 처리: 100 이상이면 레벨업하고 경험치 리셋
+    while (newExp >= 100) {
+      newExp -= 100; // 경험치를 100 빼기
+      newLevel += 1; // 레벨업
+    }
 
     set({
       gameStats: {
@@ -72,9 +78,11 @@ const useGameStore = create((set, get) => ({
         experience: newExp,
         coins: newCoins,
         questionsAnswered: stats.questionsAnswered + 1,
-        level: levelUp ? stats.level + 1 : stats.level,
+        level: newLevel,
       },
     });
+
+    const levelUp = newLevel > stats.level;
 
     return { exp, coins, levelUp };
   },
