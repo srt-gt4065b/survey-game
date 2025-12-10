@@ -1,3 +1,5 @@
+<GameHeader />
+import GameHeader from "./GameHeader";
 import React, { useEffect, useMemo, useState } from "react";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase/config";
