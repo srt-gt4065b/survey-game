@@ -10,15 +10,15 @@ const GameHeader = () => {
   const { user, gameStats } = useGameStore();
 
   // 안전한 기본값
-  const level = gameStats.level ?? 1;
-  const exp = gameStats.experience ?? 0;
-  const coins = gameStats.coins ?? 0;
-  const streak = gameStats.streak ?? 0;
+  const level = gameStats?.level ?? 1;
+  const exp = gameStats?.experience ?? 0;
+  const coins = gameStats?.coins ?? 0;
+  const streak = gameStats?.streak ?? 0;
 
-  const totalQuestions = gameStats.totalQuestions ?? 1;
-  const answered = gameStats.questionsAnswered ?? 0;
+  const totalQuestions = gameStats?.totalQuestions ?? 1;
+  const answered = gameStats?.questionsAnswered ?? 0;
 
-  const chapter = gameStats.currentChapter ?? 1;
+  const chapter = gameStats?.currentChapter ?? 1;
 
   // 계산
   const expPercent = Math.min((exp / 100) * 100, 100);
@@ -34,14 +34,14 @@ const GameHeader = () => {
       {/* 사용자 정보 */}
       <div className="user-section">
         <div className="avatar">
-          <span className="avatar-emoji">{user.avatar || "🎓"}</span>
+          <span className="avatar-emoji">{user?.avatar || "🎓"}</span>
           <div className="level-badge">Lv.{level}</div>
         </div>
 
         <div className="user-info">
-          <div className="user-name">{user.name || "Player"}</div>
+          <div className="user-name">{user?.name || "Player"}</div>
           <div className="user-department">
-            {user.department || "Department"}
+            {user?.department || "Department"}
           </div>
         </div>
 
