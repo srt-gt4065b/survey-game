@@ -264,8 +264,8 @@ const WelcomeScreen = ({ onStart }) => {
         >
           <h4>📋 How to Play</h4>
           <ul>
-            <li>{"🏆"} Earn bonus points for quick answers</li>
-            <li>{"🏆"} Get combo bonuses for consecutive answers</li>
-            <li>{"🏆"} Compete with friends on the leaderboard</li>
-            <li>{"🏆"} Complete achievements and receive rewards</li>
+            <li> Tip1. Earn bonus points for quick answers</li>
+            <li> Tip2. Get combo bonuses for consecutive answers</li>
+            <li> Tip3. Compete with friends on the leaderboard</li>
+            <li> Tip4. Complete achievements and receive rewards</li>
           </ul
