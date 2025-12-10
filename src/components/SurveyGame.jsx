@@ -159,17 +159,20 @@ const SurveyGame = ({ onComplete }) => {
   );
 
   return (
-    <LayoutWrapper progress={progress} chapter={currentCategory}>
-      <QuestionCard
-        key={currentQuestion.docId} // ← React key 안전
-        question={formatted}
-        questionNumber={currentIndex + 1}
-        totalQuestions={filteredQuestions.length}
-        onAnswer={handleAnswer}
-      />
-    </LayoutWrapper>
+  <LayoutWrapper progress={progress} chapter={currentCategory}>
+    
+    {/* 🔥 항상 화면 맨 위에 배치 */}
     <GameHeader />
-  );
+
+    <QuestionCard
+      key={currentQuestion.docId}
+      question={formatted}
+      questionNumber={currentIndex + 1}
+      totalQuestions={filteredQuestions.length}
+      onAnswer={handleAnswer}
+    />
+  </LayoutWrapper>
+);
 };
 
 export default SurveyGame;
