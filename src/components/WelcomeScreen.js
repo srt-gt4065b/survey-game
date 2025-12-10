@@ -267,5 +267,5 @@ const WelcomeScreen = ({ onStart }) => {
             <li>💡 Earn bonus points for quick answers</li>
             <li>🔥 Get combo bonuses for consecutive answers</li>
             <li>🏆 Compete with friends on the leaderboard</li>
-            <li>💎 Complete achievements and receive rewards</li>
+            <li>{"💎"} Complete achievements and receive rewards</li>
           </ul
