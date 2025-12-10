@@ -40,50 +40,57 @@ const WelcomeScreen = ({ onStart }) => {
   };
 
   const handleStart = () => {
-    // 유효성 검사
-    // 🔐 admin 계정은 major 없이 로그인 허용
-if (name === "admin" && studentId === "admin") {
-    useGameStore.getState().setUser({
-        id: "admin",
-        name: "관리자",
-        major: "admin"
-    });
-    onStart();
-    return;
-}
+  const { name, studentId, department } = formData;
 
-// 일반 학생은 모든 필수값 필요
-if (!name || !studentId || !major) {
-    toast.error("모든 필드를 입력해주세요!");
-    return;
-}
-
-
-    // 사용자 정보 저장
+  // 🔐 1) admin 계정 예외 처리 (학과 선택 불필요)
+  if (name === "admin" && studentId === "admin") {
     setUser({
-      id: formData.studentId,
-      name: formData.name,
-      studentId: formData.studentId,
-      department: formData.department,
+      id: "admin",
+      name: "관리자",
+      studentId: "admin",
+      department: "admin",
       avatar: formData.avatar,
     });
 
-    // 게임 초기화
     resetGame();
-
-    // 환영 메시지
-    toast.success(`환영합니다, ${formData.name}님! 🎮`, {
-      duration: 3000,
-      position: 'top-center',
-      style: {
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
-      },
+    toast.success("관리자 로그인 완료!", {
+      position: "top-center",
+      duration: 1500,
     });
 
-    // 게임 시작
     onStart();
-  };
+    return;
+  }
+
+  // 🔎 2) 일반 학생 입력 검증
+  if (!name || !studentId || !department) {
+    toast.error("모든 필드를 입력해주세요!");
+    return;
+  }
+
+  // 3) 정상 학생 로그인 처리
+  setUser({
+    id: studentId,
+    name,
+    studentId,
+    department,
+    avatar: formData.avatar,
+  });
+
+  resetGame();
+
+  toast.success(`환영합니다, ${name}님! 🎮`, {
+    duration: 3000,
+    position: "top-center",
+    style: {
+      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      color: "white",
+    },
+  });
+
+  onStart();
+};
+
 
   return (
     <div className="welcome-screen">
