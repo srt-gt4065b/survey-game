@@ -5,15 +5,15 @@ const QuestionCard = ({
   question,
   questionNumber,
   totalQuestions,
+  overallNumber,
+  overallTotal,
   onAnswer,
 }) => {
   const [selected, setSelected] = useState("");
 
   const { text, type, options, section } = question;
 
-  // -------------------------------
-  // Likert 5점 척도 자동 적용
-  // -------------------------------
+  // Likert 5점 척도
   const likert = [
     "😍 Strongly Agree",
     "🙂 Agree",
@@ -29,8 +29,13 @@ const QuestionCard = ({
       {/* 상단 정보 */}
       <div className="q-header">
         <div className="q-section">{section}</div>
-        <div className="q-progress">
-          {questionNumber} / {totalQuestions}
+        <div className="q-progress-group">
+          <div className="q-progress-chapter">
+            Chapter: {questionNumber} / {totalQuestions}
+          </div>
+          <div className="q-progress-overall">
+            Overall: {overallNumber} / {overallTotal}
+          </div>
         </div>
       </div>
 
