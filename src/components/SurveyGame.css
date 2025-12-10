@@ -1,0 +1,12 @@
+.survey-info-bar {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.15);
+  padding: 8px 14px;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
