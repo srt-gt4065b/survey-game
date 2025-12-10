@@ -7,7 +7,6 @@ import "./WelcomeScreen.css";
 
 const avatars = ["🎓", "👨‍🎓", "👩‍🎓", "🧑‍🎓", "🦸", "🦹", "🧙", "🧝", "🎯", "🎮", "🎨", "🎭"];
 
-// ✅ 최종 수정!
 const departments = [
   "경영학과 (Management)",
   "글로벌융합비즈니스학과 (Global Convergence Mgmt.)",
@@ -55,7 +54,7 @@ const WelcomeScreen = ({ onStart }) => {
     }));
   };
 
- const handleStart = () => {
+  const handleStart = () => {
     const { name, studentId, department, avatar, language } = formData;
 
     // 🔐 관리자 로그인 (admin / admin)
@@ -105,7 +104,6 @@ const WelcomeScreen = ({ onStart }) => {
 
     onStart();
   };
-  };
 
   return (
     <div className="welcome-screen">
@@ -115,7 +113,7 @@ const WelcomeScreen = ({ onStart }) => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
       >
-        {/* 타이틀 - 영문화 */}
+        {/* 타이틀 */}
         <div className="welcome-header">
           <motion.h1
             className="welcome-title"
@@ -135,7 +133,7 @@ const WelcomeScreen = ({ onStart }) => {
           </motion.p>
         </div>
 
-        {/* 게임 특징 - 영문화 */}
+        {/* 게임 특징 */}
         <motion.div
           className="features-grid"
           initial={{ opacity: 0 }}
@@ -160,7 +158,7 @@ const WelcomeScreen = ({ onStart }) => {
           </div>
         </motion.div>
 
-        {/* 캐릭터 선택 - 영문화 */}
+        {/* 캐릭터 선택 */}
         <motion.div
           className="avatar-section"
           initial={{ opacity: 0 }}
@@ -188,7 +186,7 @@ const WelcomeScreen = ({ onStart }) => {
           </div>
         </motion.div>
 
-        {/* 정보 입력 - 영문화 */}
+        {/* 정보 입력 */}
         <motion.div
           className="form-section"
           initial={{ opacity: 0, y: 20 }}
@@ -244,7 +242,7 @@ const WelcomeScreen = ({ onStart }) => {
           </select>
         </motion.div>
 
-        {/* 시작 버튼 - 영문화 */}
+        {/* 시작 버튼 */}
         <motion.button
           className="start-button"
           onClick={handleStart}
@@ -257,7 +255,7 @@ const WelcomeScreen = ({ onStart }) => {
           🚀 Start Game
         </motion.button>
 
-        {/* 설명 - 영문화 */}
+        {/* 설명 */}
         <motion.div
           className="instructions"
           initial={{ opacity: 0 }}
@@ -270,11 +268,4 @@ const WelcomeScreen = ({ onStart }) => {
             <li>🔥 Get combo bonuses for consecutive answers</li>
             <li>🏆 Compete with friends on the leaderboard</li>
             <li>💎 Complete achievements and receive rewards</li>
-          </ul>
-        </motion.div>
-      </motion.div>
-    </div>
-  );
-};
-
-export default WelcomeScreen;
+          </ul
