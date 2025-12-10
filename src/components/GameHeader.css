@@ -1,26 +1,58 @@
+/* Header 전체 컨테이너 */
 .game-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-  padding: 15px 0;
   width: 100%;
+  display: flex;
+  justify-content: center;       /* 가운데 정렬 */
+  gap: 60px;                     /* 항목 간 간격 */
+  padding: 20px 0;
   position: sticky;
   top: 0;
-  z-index: 50;
-  background: transparent;
-}
-
-.game-header-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 14px;
+  z-index: 999;
   color: white;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
-.game-header-item span.value {
-  font-size: 20px;
+/* 개별 스탯 박스 */
+.stat-box {
+  display: flex;
+  flex-direction: column;        /* 아이콘 위, 숫자 아래 */
+  align-items: center;
+  font-size: 18px;
+}
+
+/* 아이콘 */
+.stat-icon {
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+/* 텍스트 스타일 */
+.stat-value {
   font-weight: 700;
-  margin-top: 4px;
+  font-size: 22px;
+}
+
+.stat-label {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 480px) {
+  .game-header {
+    gap: 30px;
+    padding: 12px 0;
+  }
+
+  .stat-icon {
+    font-size: 24px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+  }
 }
