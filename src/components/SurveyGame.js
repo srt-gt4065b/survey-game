@@ -120,6 +120,7 @@ const SurveyGame = ({ onComplete }) => {
 
   const language = user?.language || "en";
 
+  // ───────────────── 로딩 상태 ─────────────────
   if (loading) {
     return (
       <div className="survey-game">
@@ -136,16 +137,38 @@ const SurveyGame = ({ onComplete }) => {
     );
   }
 
-  // ✅ Firestore 데이터를 QuestionCard 형식으로 변환
+  // ───────────────── 타입별 옵션 처리 ─────────────────
+  const getOptionsForType = (type, existingOptions) => {
+    // text 타입은 options 불필요
+    if (type === 'text') {
+      return [];
+    }
+    
+    // likert/multi 타입인데 options가 있으면 그대로 사용
+    if (existingOptions && existingOptions.length > 0) {
+      return existingOptions;
+    }
+    
+    // likert 타입인데 options가 없으면 기본값 제공
+    if (type === 'likert') {
+      return ['매우 불만족', '불만족', '보통', '만족', '매우 만족'];
+    }
+    
+    // multi 타입인데 options가 없으면 경고
+    if (type === 'multi') {
+      console.warn(`Multi type question ${currentQuestion.id} has no options!`);
+      return [];
+    }
+    
+    return [];
+  };
+
+  // ───────────────── Firestore 데이터를 QuestionCard 형식으로 변환 ─────────────────
   const formattedQuestion = {
     text: currentQuestion.text?.[language] || currentQuestion.text?.en || '질문 없음',
     section: currentQuestion.category || '일반',
     type: currentQuestion.type || 'text',
-    options: currentQuestion.options && currentQuestion.options.length > 0 
-      ? currentQuestion.options 
-      : (currentQuestion.type === 'likert' 
-        ? ['매우 그렇지 않다', '그렇지 않다', '보통이다', '그렇다', '매우 그렇다']
-        : []),
+    options: getOptionsForType(currentQuestion.type, currentQuestion.options),
     required: true
   };
 
@@ -177,7 +200,7 @@ const SurveyGame = ({ onComplete }) => {
         </span>
       </div>
 
-      {/* ✅ 변환된 데이터로 QuestionCard 호출 */}
+      {/* QuestionCard */}
       <QuestionCard
         key={currentQuestion.id}
         question={formattedQuestion}
