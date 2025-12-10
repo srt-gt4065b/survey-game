@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/survey-game/static/css/main.a95d786b.css",
-    "main.js": "/survey-game/static/js/main.a965fc0b.js",
+    "main.css": "/survey-game/static/css/main.29c50daa.css",
+    "main.js": "/survey-game/static/js/main.f59158a5.js",
     "index.html": "/survey-game/index.html",
-    "main.a95d786b.css.map": "/survey-game/static/css/main.a95d786b.css.map",
-    "main.a965fc0b.js.map": "/survey-game/static/js/main.a965fc0b.js.map"
+    "main.29c50daa.css.map": "/survey-game/static/css/main.29c50daa.css.map",
+    "main.f59158a5.js.map": "/survey-game/static/js/main.f59158a5.js.map"
   },
   "entrypoints": [
-    "static/css/main.a95d786b.css",
-    "static/js/main.a965fc0b.js"
+    "static/css/main.29c50daa.css",
+    "static/js/main.f59158a5.js"
   ]
 }
