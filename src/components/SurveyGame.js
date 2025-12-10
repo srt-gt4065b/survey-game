@@ -118,7 +118,7 @@ const SurveyGame = ({ onComplete }) => {
     setCurrentCategory(cat);
   };
 
-  const language = user.language || "en";
+  const language = user?.language || "en";
 
   if (loading) {
     return (
@@ -135,6 +135,19 @@ const SurveyGame = ({ onComplete }) => {
       </div>
     );
   }
+
+  // ✅ Firestore 데이터를 QuestionCard 형식으로 변환
+  const formattedQuestion = {
+    text: currentQuestion.text?.[language] || currentQuestion.text?.en || '질문 없음',
+    section: currentQuestion.category || '일반',
+    type: currentQuestion.type || 'text',
+    options: currentQuestion.options && currentQuestion.options.length > 0 
+      ? currentQuestion.options 
+      : (currentQuestion.type === 'likert' 
+        ? ['매우 그렇지 않다', '그렇지 않다', '보통이다', '그렇다', '매우 그렇다']
+        : []),
+    required: true
+  };
 
   return (
     <div className="survey-game">
@@ -164,11 +177,12 @@ const SurveyGame = ({ onComplete }) => {
         </span>
       </div>
 
-      {/* 실제 질문 카드 (다국어 지원은 QuestionCard 안에서 처리) */}
+      {/* ✅ 변환된 데이터로 QuestionCard 호출 */}
       <QuestionCard
         key={currentQuestion.id}
-        question={currentQuestion}
-        language={language}
+        question={formattedQuestion}
+        questionNumber={currentIndex + 1}
+        totalQuestions={filteredQuestions.length}
         onAnswer={handleAnswer}
       />
     </div>
