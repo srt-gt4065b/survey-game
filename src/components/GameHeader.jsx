@@ -1,35 +1,31 @@
-// src/components/GameHeader.jsx
 import React from "react";
 import useGameStore from "../store/gameStore";
 import "./GameHeader.css";
 
 const GameHeader = () => {
-  // 🟢 Zustand store에서 최신 게임 스탯 구독
-  const { level, coins, streak, experience, totalQuestions, questionsAnswered } =
-    useGameStore((state) => state.gameStats);
+  const { level, streak, coins } = useGameStore();
 
   return (
-    <div className="game-header-container fade-in">
-      {/* 레벨 */}
+    <div className="game-header">
+      
       <div className="stat-box">
-        <span className="icon">⭐</span>
-        <div className="value">{level}</div>
-        <div className="label">Level</div>
+        <div className="stat-icon">⭐</div>
+        <div className="stat-value">{level}</div>
+        <div className="stat-label">Level</div>
       </div>
 
-      {/* 스트릭 */}
       <div className="stat-box">
-        <span className="icon">🔥</span>
-        <div className="value">{streak}</div>
-        <div className="label">Streak</div>
+        <div className="stat-icon">🔥</div>
+        <div className="stat-value">{streak}</div>
+        <div className="stat-label">Streak</div>
       </div>
 
-      {/* 코인 */}
       <div className="stat-box">
-        <span className="icon">🪙</span>
-        <div className="value">{coins}</div>
-        <div className="label">Coins</div>
+        <div className="stat-icon">🪙</div>
+        <div className="stat-value">{coins}</div>
+        <div className="stat-label">Coins</div>
       </div>
+
     </div>
   );
 };
