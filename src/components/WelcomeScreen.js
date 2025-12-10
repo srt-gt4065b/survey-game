@@ -269,3 +269,10 @@ const WelcomeScreen = ({ onStart }) => {
             <li> 🎯Tip3: Compete with friends on the leaderboard</li>
             <li> 🎯Tip4: Complete achievements and receive rewards</li>
           </ul>
+        </motion.div>   // ← 반드시 있어야 함!!
+    </motion.div>     // ← 이것도 있어야 함
+</div>              // ← welcome-screen 닫기
+);
+}
+
+export default WelcomeScreen;
