@@ -1,203 +1,338 @@
-import React, { useEffect, useState } from "react";
-import { db } from "../firebase/config";
+// src/components/AdminPage.jsx
+import React, { useEffect, useMemo, useState } from "react";
 import {
   collection,
   getDocs,
-  updateDoc,
+  orderBy,
+  query,
   doc,
+  updateDoc,
   deleteDoc,
 } from "firebase/firestore";
-import "./AdminPage.css";
+import { db } from "../firebase/config";
+import toast from "react-hot-toast";
+import "./AdminPage.css"; // 스타일은 아래에 예시 제공
 
-const LANGUAGES = ["en", "ko", "zh", "uz", "kk", "bn"];
+const LANG_OPTIONS = [
+  { value: "en", label: "EN" },
+  { value: "ko", label: "KO" },
+  { value: "zh", label: "ZH" },
+  { value: "kk", label: "KK" },
+  { value: "uz", label: "UZ" },
+  { value: "bn", label: "BN" },
+];
 
-export default function AdminPage() {
+const TYPE_OPTIONS = [
+  { value: "all", label: "likert / text / multi" },
+  { value: "likert", label: "likert" },
+  { value: "text", label: "text" },
+  { value: "multi", label: "multi" },
+];
+
+function AdminPage() {
   const [questions, setQuestions] = useState([]);
-  const [filtered, setFiltered] = useState([]);
-  const [selectedLang, setSelectedLang] = useState("en");
-  const [category, setCategory] = useState("");
-  const [type, setType] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [editing, setEditing] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [selectedLanguage, setSelectedLanguage] = useState("zh");
+  const [filterCategory, setFilterCategory] = useState("");
+  const [filterType, setFilterType] = useState("all");
 
-  // -----------------------
-  // 🔥 Load all questions
-  // -----------------------
+  const [editingQuestion, setEditingQuestion] = useState(null);
+
+  // ---------- Firestore에서 질문 목록 로드 ----------
   const loadQuestions = async () => {
-    setLoading(true);
-    const snap = await getDocs(collection(db, "questions"));
-    const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    try {
+      setLoading(true);
+      const qRef = collection(db, "questions");
+      const q = query(qRef, orderBy("id", "asc"));
+      const snap = await getDocs(q);
 
-    setQuestions(data);
-    setFiltered(data);
-    setLoading(false);
+      const list = snap.docs.map((d) => ({
+        docId: d.id, // Firestore 실제 문서 ID
+        ...d.data(),
+      }));
+
+      setQuestions(list);
+    } catch (err) {
+      console.error(err);
+      toast.error("질문 목록을 불러오지 못했습니다.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     loadQuestions();
   }, []);
 
-  // -----------------------
-  // 🔍 Filter logic
-  // -----------------------
-  useEffect(() => {
-    let list = [...questions];
+  // ---------- 필터링 ----------
+  const filteredQuestions = useMemo(() => {
+    return questions.filter((q) => {
+      const byType = filterType === "all" ? true : q.type === filterType;
+      const byCategory = filterCategory
+        ? q.category
+            ?.toLowerCase()
+            .includes(filterCategory.toLowerCase())
+        : true;
+      return byType && byCategory;
+    });
+  }, [questions, filterCategory, filterType]);
 
-    if (category) list = list.filter(q => q.category === category);
-    if (type) list = list.filter(q => q.type === type);
+  // ---------- 삭제 ----------
+  const handleDelete = async (question) => {
+    const ok = window.confirm(
+      `${question.id} (${question.category}) 문항을 정말 삭제할까요?`
+    );
+    if (!ok) return;
 
-    setFiltered(list);
-  }, [category, type, questions]);
-
-  // -----------------------
-  // ✏️ Edit a question
-  // -----------------------
-  const startEdit = (q) => {
-    setEditing(JSON.parse(JSON.stringify(q))); // deep copy
+    try {
+      await deleteDoc(doc(db, "questions", question.docId));
+      setQuestions((prev) =>
+        prev.filter((q) => q.docId !== question.docId)
+      );
+      toast.success("삭제 완료");
+    } catch (err) {
+      console.error(err);
+      toast.error("삭제 중 오류가 발생했습니다.");
+    }
   };
 
-  // -----------------------
-  // 💾 Save to Firestore
-  // -----------------------
-  const saveEdit = async () => {
-    if (!editing) return;
+  // ---------- 저장 (Update) ----------
+  const handleSave = async () => {
+    if (!editingQuestion) return;
 
-    const ref = doc(db, "questions", editing.id);
-    await updateDoc(ref, editing);
+    try {
+      const { docId, ...payload } = editingQuestion; // docId 분리하고 나머지만 저장
+      await updateDoc(doc(db, "questions", docId), payload);
 
-    alert("Updated successfully!");
-    setEditing(null);
-    loadQuestions();
+      // 로컬 상태 동기화
+      setQuestions((prev) =>
+        prev.map((q) => (q.docId === docId ? editingQuestion : q))
+      );
+
+      toast.success("Firebase에 저장되었습니다 ✅");
+      setEditingQuestion(null);
+    } catch (err) {
+      console.error(err);
+      toast.error("저장 실패 ❌");
+    }
   };
 
-  // -----------------------
-  // 🗑 Delete Question
-  // -----------------------
-  const deleteQuestion = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this question?")) return;
+  // ---------- 편집 패널 ----------
+  const renderEditPanel = () => {
+    if (!editingQuestion) return null;
 
-    await deleteDoc(doc(db, "questions", id));
-    loadQuestions();
-  };
+    const q = editingQuestion;
+    const lang = selectedLanguage;
 
-  return (
-    <div className="admin-container">
-      <h1>📊 Survey Admin Panel</h1>
+    return (
+      <div className="ap-edit-panel">
+        <h3>
+          Edit Question – <span>{q.id}</span>
+        </h3>
 
-      {/* ---------------- LANGUAGE SELECT ---------------- */}
-      <div className="filters">
-        <label>Language:</label>
-        <select value={selectedLang} onChange={(e) => setSelectedLang(e.target.value)}>
-          {LANGUAGES.map((l) => (
-            <option key={l} value={l}>{l.toUpperCase()}</option>
-          ))}
-        </select>
-
-        <label>Category:</label>
-        <input
-          placeholder="e.g. Personal Background"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-        />
-
-        <label>Type:</label>
-        <input
-          placeholder="likert / text / multi"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-        />
-      </div>
-
-      {loading && <p>Loading...</p>}
-
-      {/* ---------------- EDIT PANEL ---------------- */}
-      {editing && (
-        <div className="edit-box">
-          <h2>✏️ Edit Question</h2>
-
+        <div className="ap-edit-row">
           <label>ID</label>
-          <input value={editing.id} disabled />
+          <input
+            type="text"
+            value={q.id}
+            onChange={(e) =>
+              setEditingQuestion({ ...q, id: e.target.value })
+            }
+          />
+        </div>
 
+        <div className="ap-edit-row">
           <label>Category</label>
           <input
-            value={editing.category}
-            onChange={(e) => setEditing({ ...editing, category: e.target.value })}
+            type="text"
+            value={q.category || ""}
+            onChange={(e) =>
+              setEditingQuestion({ ...q, category: e.target.value })
+            }
           />
+        </div>
 
+        <div className="ap-edit-row">
           <label>Type</label>
-          <input
-            value={editing.type}
-            onChange={(e) => setEditing({ ...editing, type: e.target.value })}
+          <select
+            value={q.type || "likert"}
+            onChange={(e) =>
+              setEditingQuestion({ ...q, type: e.target.value })
+            }
+          >
+            <option value="likert">likert</option>
+            <option value="text">text</option>
+            <option value="multi">multi</option>
+          </select>
+        </div>
+
+        <div className="ap-edit-row">
+          <label>Question ({lang})</label>
+          <textarea
+            rows={3}
+            value={q.text?.[lang] || ""}
+            onChange={(e) =>
+              setEditingQuestion({
+                ...q,
+                text: {
+                  ...(q.text || {}),
+                  [lang]: e.target.value,
+                },
+              })
+            }
           />
+        </div>
 
-          {/* Text per language */}
-          {LANGUAGES.map((l) => (
-            <div key={l}>
-              <label>{l.toUpperCase()}</label>
-              <input
-                value={editing.text?.[l] || ""}
-                onChange={(e) => {
-                  setEditing({
-                    ...editing,
-                    text: { ...editing.text, [l]: e.target.value },
-                  });
-                }}
-              />
-            </div>
-          ))}
+        {q.type === "likert" || q.type === "multi" ? (
+          <div className="ap-edit-row">
+            <label>Options (공통, | 로 분리)</label>
+            <textarea
+              rows={2}
+              value={(q.options || []).join(" | ")}
+              onChange={(e) =>
+                setEditingQuestion({
+                  ...q,
+                  options: e.target.value
+                    .split("|")
+                    .map((s) => s.trim())
+                    .filter((s) => s.length > 0),
+                })
+              }
+            />
+            <small>
+              예시: 🙄 Strongly Disagree | 😐 Neutral | 😍 Strongly Agree
+            </small>
+          </div>
+        ) : null}
 
-          {/* OPTIONS */}
-          {editing.options && (
-            <>
-              <label>Options (comma separated)</label>
-              <input
-                value={editing.options.join(", ")}
-                onChange={(e) =>
-                  setEditing({
-                    ...editing,
-                    options: e.target.value.split(",").map(s => s.trim()),
-                  })
-                }
-              />
-            </>
-          )}
+        <div className="ap-edit-actions">
+          <button
+            className="ap-btn ap-btn-secondary"
+            onClick={() => setEditingQuestion(null)}
+          >
+            취소
+          </button>
+          <button className="ap-btn ap-btn-primary" onClick={handleSave}>
+            💾 Save Changes
+          </button>
+        </div>
+      </div>
+    );
+  };
 
-          <button className="save-btn" onClick={saveEdit}>Save</button>
-          <button className="cancel-btn" onClick={() => setEditing(null)}>Cancel</button>
+  // ---------- 메인 렌더링 ----------
+  return (
+    <div className="ap-root">
+      <header className="ap-header">
+        <div className="ap-title">
+          <span role="img" aria-label="clipboard">
+            📋
+          </span>{" "}
+          Survey Admin Panel
+        </div>
+
+        <div className="ap-filters">
+          <div className="ap-filter-group">
+            <label>Language:</label>
+            <select
+              value={selectedLanguage}
+              onChange={(e) => setSelectedLanguage(e.target.value)}
+            >
+              {LANG_OPTIONS.map((l) => (
+                <option key={l.value} value={l.value}>
+                  {l.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="ap-filter-group">
+            <label>Category:</label>
+            <input
+              type="text"
+              placeholder="e.g. Personal Background"
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+            />
+          </div>
+
+          <div className="ap-filter-group">
+            <label>Type:</label>
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+            >
+              {TYPE_OPTIONS.map((t) => (
+                <option key={t.value} value={t.value}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button className="ap-btn" onClick={loadQuestions}>
+            🔄 Reload
+          </button>
+        </div>
+      </header>
+
+      {loading ? (
+        <div className="ap-loading">Loading questions...</div>
+      ) : (
+        <div className="ap-table-wrapper">
+          <table className="ap-table">
+            <thead>
+              <tr>
+                <th style={{ width: "70px" }}>ID</th>
+                <th style={{ width: "220px" }}>Category</th>
+                <th style={{ width: "80px" }}>Type</th>
+                <th>Question ({selectedLanguage})</th>
+                <th style={{ width: "80px" }}>Edit</th>
+                <th style={{ width: "80px" }}>Del</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredQuestions.map((q) => (
+                <tr key={q.docId}>
+                  <td>{q.id}</td>
+                  <td>{q.category}</td>
+                  <td>{q.type}</td>
+                  <td>{q.text?.[selectedLanguage] || ""}</td>
+                  <td>
+                    <button
+                      className="ap-icon-btn ap-edit-btn"
+                      onClick={() => setEditingQuestion(q)}
+                    >
+                      ✏️
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="ap-icon-btn ap-del-btn"
+                      onClick={() => handleDelete(q)}
+                    >
+                      ❌
+                    </button>
+                  </td>
+                </tr>
+              ))}
+
+              {filteredQuestions.length === 0 && (
+                <tr>
+                  <td colSpan={6} style={{ textAlign: "center", padding: 20 }}>
+                    검색 조건에 해당하는 문항이 없습니다.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       )}
 
-      {/* ---------------- LIST TABLE ---------------- */}
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Category</th>
-            <th>Type</th>
-            <th>Question ({selectedLang})</th>
-            <th>Edit</th>
-            <th>Del</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {filtered.map((q) => (
-            <tr key={q.id}>
-              <td>{q.id}</td>
-              <td>{q.category}</td>
-              <td>{q.type}</td>
-              <td>{q.text?.[selectedLang]}</td>
-              <td>
-                <button onClick={() => startEdit(q)}>✏️</button>
-              </td>
-              <td>
-                <button className="del" onClick={() => deleteQuestion(q.id)}>❌</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {renderEditPanel()}
     </div>
   );
 }
+
+export default AdminPage;
