@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import useGameStore from './store/gameStore';
+//어드민페이지 연결
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AdminPage from "./components/AdminPage";
+import MainGame from "./components/MainGame";
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainGame />} />
+        <Route path="/admin" element={<AdminPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
 import WelcomeScreen from './components/WelcomeScreen';
 import { Toaster } from 'react-hot-toast';
@@ -11,6 +26,8 @@ import Confetti from 'react-confetti';
 let SurveyGame = null;
 let Leaderboard = null;
 let AdminPanel = null;
+
+
 
 try {
   SurveyGame = require('./components/SurveyGame').default;
