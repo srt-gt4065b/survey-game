@@ -22,7 +22,7 @@ const QuestionCard = ({
     "😡 Strongly Disagree",
   ];
 
-  const answerOptions = type === "likert" ? likert : options || [];
+  const answerOptions = type === "likert" ? likert :  getOptionsArray(options);
 
   return (
     <div className="question-card fade-in">
