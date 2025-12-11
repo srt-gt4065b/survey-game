@@ -1,69 +1,172 @@
-.admin-container {
-  padding: 40px;
-  max-width: 1200px;
-  margin: auto;
-  font-family: 'Noto Sans KR', sans-serif;
+.ap-root {
+  min-height: 100vh;
+  padding: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  color: #fff;
 }
 
-.filters {
+.ap-header {
   display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.filters input, .filters select {
-  padding: 8px;
+.ap-title {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.ap-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.ap-filter-group {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+
+.ap-filter-group label {
+  margin-bottom: 2px;
+}
+
+.ap-filter-group input,
+.ap-filter-group select {
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+}
+
+.ap-btn {
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.9);
+  color: #444;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.ap-btn-primary {
+  background: #00d084;
+  color: #fff;
+}
+
+.ap-btn-secondary {
+  background: #555;
+  color: #fff;
+}
+
+.ap-btn:hover {
+  opacity: 0.92;
+}
+
+.ap-table-wrapper {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 12px;
+  overflow-x: auto;
+}
+
+.ap-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.ap-table th,
+.ap-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ap-table th {
+  text-align: left;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.ap-icon-btn {
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+.ap-edit-btn {
+  background: #ffd166;
+}
+
+.ap-del-btn {
+  background: #ff6b6b;
+  color: #fff;
+}
+
+.ap-loading {
+  margin-top: 40px;
+  text-align: center;
   font-size: 16px;
 }
 
-.admin-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+/* 편집 패널 */
+.ap-edit-panel {
+  margin-top: 18px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 16px;
+  max-width: 720px;
 }
 
-.admin-table th, .admin-table td {
-  border: 1px solid #ddd;
-  padding: 10px;
+.ap-edit-panel h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
 }
 
-.admin-table th {
-  background: #f2f2f2;
+.ap-edit-panel h3 span {
+  font-weight: 700;
 }
 
-.edit-box {
-  background: #fff7dd;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 30px;
+.ap-edit-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  font-size: 13px;
 }
 
-.edit-box input {
-  display: block;
-  width: 100%;
-  padding: 8px;
-  margin: 8px 0;
+.ap-edit-row label {
+  margin-bottom: 3px;
 }
 
-.save-btn {
-  background: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  margin-right: 10px;
+.ap-edit-row input,
+.ap-edit-row select,
+.ap-edit-row textarea {
+  border-radius: 8px;
   border: none;
-  border-radius: 5px;
+  padding: 6px 8px;
+  font-size: 14px;
 }
 
-.cancel-btn {
-  background: #999;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
+.ap-edit-row textarea {
+  resize: vertical;
 }
 
-button.del {
-  background: #d9534f;
-  color: white;
-  padding: 6px 10px;
+.ap-edit-row small {
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
+.ap-edit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
 }
