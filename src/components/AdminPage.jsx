@@ -219,13 +219,23 @@ function AdminPage() {
               });
 
               // options 처리 (쉼표로 구분된 문자열 → 배열)
-              let options = [];
-              if (row.options && row.options.trim()) {
-                options = row.options
-                  .split(",")
-                  .map((opt) => opt.trim())
-                  .filter((opt) => opt.length > 0);
-              }
+             // options 처리 (쉼표 또는 파이프로 구분된 문자열 → 배열)
+let options = [];
+if (row.options && row.options.trim()) {
+  const optionsStr = row.options.trim();
+  // 쉼표로 구분된 경우
+  if (optionsStr.includes(',')) {
+    options = optionsStr.split(",").map(opt => opt.trim()).filter(opt => opt.length > 0);
+  }
+  // 파이프로 구분된 경우
+  else if (optionsStr.includes('|')) {
+    options = optionsStr.split("|").map(opt => opt.trim()).filter(opt => opt.length > 0);
+  }
+  // 단일 값인 경우
+  else {
+    options = [optionsStr];
+  }
+}
 
               // Firestore 문서 데이터
               const questionData = {
