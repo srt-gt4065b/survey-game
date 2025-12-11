@@ -6,7 +6,7 @@ import useGameStore from "./store/gameStore";
 // 라우터 & 어드민 페이지
 import { HashRouter as Router, Routes, Route  } from "react-router-dom";
 import AdminPage from "./components/AdminPage";
-import MainGame from "./components/MainGame";
+
 
 // 게임 화면들
 import WelcomeScreen from "./components/WelcomeScreen";
