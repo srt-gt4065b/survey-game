@@ -5,7 +5,14 @@ import useGameStore from "../store/gameStore";
 import toast from "react-hot-toast";
 import "./WelcomeScreen.css";
 
-const avatars = ["🎓", "👨‍🎓", "👩‍🎓", "🧑‍🎓", "🦸", "🦹", "🧙", "🧝", "🎯", "🎮", "🎨", "🎭"];
+const avatars = [
+  { emoji: "👨‍💼", color: "#FF6B9D" },
+  { emoji: "👨‍🎓", color: "#C084FC" },
+  { emoji: "🧑‍💻", color: "#60D5E8" },
+  { emoji: "👩‍🎓", color: "#FFA07A" },
+  { emoji: "🧑‍🔬", color: "#98D8C8" },
+  { emoji: "👨‍🏫", color: "#FFB347" },
+];
 
 const departments = [
   "경영학과 (Management)",
@@ -32,11 +39,12 @@ const WelcomeScreen = ({ onStart }) => {
     name: "",
     studentId: "",
     department: "",
-    avatar: "🎓",
+    avatar: "👨‍💼",
     language: "en",
   });
 
-  const [selectedAvatar, setSelectedAvatar] = useState("🎓");
+  const [selectedAvatar, setSelectedAvatar] = useState(0);
+  const [showInstructions, setShowInstructions] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -46,18 +54,18 @@ const WelcomeScreen = ({ onStart }) => {
     }));
   };
 
-  const handleAvatarSelect = (avatar) => {
-    setSelectedAvatar(avatar);
+  const handleAvatarSelect = (index) => {
+    setSelectedAvatar(index);
     setFormData((prev) => ({
       ...prev,
-      avatar,
+      avatar: avatars[index].emoji,
     }));
   };
 
   const handleStart = () => {
     const { name, studentId, department, avatar, language } = formData;
 
-    // 🔐 관리자 로그인 (admin / admin)
+    // 관리자 로그인
     if (name === "admin" && studentId === "admin") {
       setUser({
         id: "admin",
@@ -75,7 +83,7 @@ const WelcomeScreen = ({ onStart }) => {
       return;
     }
 
-    // 일반 학생: 필수값 체크
+    // 필수값 체크
     if (!name || !studentId || !department) {
       toast.error("Please fill in all fields!");
       return;
@@ -96,110 +104,86 @@ const WelcomeScreen = ({ onStart }) => {
     toast.success(`Welcome, ${name}! 🎮`, {
       duration: 3000,
       position: "top-center",
-      style: {
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        color: "white",
-      },
     });
 
     onStart();
   };
 
   return (
-    <div className="welcome-screen">
+    <div className="game-welcome-screen">
+      {/* 게임 컨트롤러 장식 */}
+      <div className="game-controller left-controller">🎮</div>
+      <div className="game-controller right-controller">🎮</div>
+
       <motion.div
-        className="welcome-container"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
+        className="game-welcome-container"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
       >
         {/* 타이틀 */}
-        <div className="welcome-header">
-          <motion.h1
-            className="welcome-title"
-            initial={{ y: -50 }}
-            animate={{ y: 0 }}
-            transition={{ type: "spring", stiffness: 100 }}
-          >
-            🎮 Survey Quest 🎮
-          </motion.h1>
-          <motion.p
-            className="welcome-subtitle"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            Enjoy the student satisfaction survey like a game!
-          </motion.p>
-        </div>
-
-        {/* 게임 특징 */}
         <motion.div
-          className="features-grid"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          className="game-title-section"
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <div className="feature-card">
-            <span className="feature-icon">🏆</span>
-            <span className="feature-text">Real-time Ranking</span>
-          </div>
-          <div className="feature-card">
-            <span className="feature-icon">💎</span>
-            <span className="feature-text">Earn Rewards</span>
-          </div>
-          <div className="feature-card">
-            <span className="feature-icon">🎯</span>
-            <span className="feature-text">Achievements</span>
-          </div>
-          <div className="feature-card">
-            <span className="feature-icon">🔥</span>
-            <span className="feature-text">Streak Bonus</span>
-          </div>
+          <h1 className="game-title">Endicott Survey Game</h1>
         </motion.div>
 
+        {/* 게임 특징 */}
+        <div className="game-features">
+          <div className="game-feature-item">
+            <span className="game-feature-icon">🏆</span>
+            <span className="game-feature-text">Real-time Ranking</span>
+          </div>
+          <div className="game-feature-item">
+            <span className="game-feature-icon">💎</span>
+            <span className="game-feature-text">Earn Rewards</span>
+          </div>
+          <div className="game-feature-item">
+            <span className="game-feature-icon">🎯</span>
+            <span className="game-feature-text">Achievements</span>
+          </div>
+          <div className="game-feature-item">
+            <span className="game-feature-icon">🔥</span>
+            <span className="game-feature-text">Streak Bonus</span>
+          </div>
+        </div>
+
         {/* 캐릭터 선택 */}
-        <motion.div
-          className="avatar-section"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
-        >
-          <h3>Choose Your Character</h3>
-          <div className="avatar-grid">
+        <div className="game-avatar-section">
+          <div className="game-avatar-grid">
             {avatars.map((avatar, index) => (
               <motion.button
                 key={index}
-                className={`avatar-option ${
-                  selectedAvatar === avatar ? "selected" : ""
+                className={`game-avatar-card ${
+                  selectedAvatar === index ? "selected" : ""
                 }`}
-                onClick={() => handleAvatarSelect(avatar)}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.8 + index * 0.05 }}
+                style={{
+                  background: selectedAvatar === index 
+                    ? `linear-gradient(135deg, ${avatar.color} 0%, ${avatar.color}dd 100%)`
+                    : avatar.color
+                }}
+                onClick={() => handleAvatarSelect(index)}
+                whileHover={{ scale: 1.05, y: -5 }}
+                whileTap={{ scale: 0.95 }}
               >
-                {avatar}
+                <span className="game-avatar-emoji">{avatar.emoji}</span>
               </motion.button>
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        {/* 정보 입력 */}
-        <motion.div
-          className="form-section"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1 }}
-        >
+        {/* 입력 폼 */}
+        <div className="game-form-section">
           <input
             type="text"
             name="name"
             placeholder="Name"
             value={formData.name}
             onChange={handleInputChange}
-            className="form-input"
+            className="game-input"
             maxLength={20}
           />
 
@@ -209,7 +193,7 @@ const WelcomeScreen = ({ onStart }) => {
             placeholder="Student ID"
             value={formData.studentId}
             onChange={handleInputChange}
-            className="form-input"
+            className="game-input"
             maxLength={20}
           />
 
@@ -217,7 +201,7 @@ const WelcomeScreen = ({ onStart }) => {
             name="department"
             value={formData.department}
             onChange={handleInputChange}
-            className="form-select"
+            className="game-select"
           >
             <option value="">Select Department</option>
             {departments.map((dept, index) => (
@@ -227,12 +211,11 @@ const WelcomeScreen = ({ onStart }) => {
             ))}
           </select>
 
-          {/* 언어 선택 */}
           <select
             name="language"
             value={formData.language}
             onChange={handleInputChange}
-            className="form-select"
+            className="game-select"
           >
             {languages.map((lang) => (
               <option key={lang.code} value={lang.code}>
@@ -240,39 +223,56 @@ const WelcomeScreen = ({ onStart }) => {
               </option>
             ))}
           </select>
-        </motion.div>
+        </div>
 
         {/* 시작 버튼 */}
         <motion.button
-          className="start-button"
+          className="game-start-button"
           onClick={handleStart}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
         >
-          🚀 Start Game
+          Start Game
         </motion.button>
 
-        {/* 설명 */}
-        <motion.div
-          className="instructions"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
+        {/* How to Play 버튼 */}
+        <motion.button
+          className="game-instructions-button"
+          onClick={() => setShowInstructions(!showInstructions)}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <h4>📋 How to Play</h4>
-          <ul>
-            <li> 🎯Tip1: Earn bonus points for quick answers</li>
-            <li> 🎯Tip2: Get combo bonuses for consecutive answers</li>
-            <li> 🎯Tip3: Compete with friends on the leaderboard</li>
-            <li> 🎯Tip4: Complete achievements and receive rewards</li>
-          </ul>
-        </motion.div>   
-    </motion.div>     
-</div>              
-);
-}
+          <span className="info-icon">ⓘ</span> How to Play
+        </motion.button>
+
+        {/* 설명 팝업 */}
+        {showInstructions && (
+          <motion.div
+            className="game-instructions-popup"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+          >
+            <div className="popup-content">
+              <h3>📋 How to Play</h3>
+              <ul>
+                <li>🎯 Earn bonus points for quick answers</li>
+                <li>🔥 Get combo bonuses for consecutive answers</li>
+                <li>🏆 Compete with friends on the leaderboard</li>
+                <li>💎 Complete achievements and receive rewards</li>
+              </ul>
+              <button 
+                className="popup-close-btn"
+                onClick={() => setShowInstructions(false)}
+              >
+                Got it!
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </motion.div>
+    </div>
+  );
+};
 
 export default WelcomeScreen;
