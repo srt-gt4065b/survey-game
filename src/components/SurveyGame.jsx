@@ -6,7 +6,6 @@ import QuestionCard from "./QuestionCard";
 import GameHeader from "./GameHeader";
 import toast from "react-hot-toast";
 import "./SurveyGame.css";
-import { getOptionsArray } from "./QuestionCard";
 
 
 const SurveyGame = ({ onComplete }) => {
