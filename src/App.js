@@ -1,12 +1,12 @@
 // App.js
 import React, { useState, useEffect } from "react";
 import "./App.css";
-
 import useGameStore from "./store/gameStore";
 
 // 라우터 & 어드민 페이지
-import { HashRouter as Router } from "react-router-dom";
+import { HashRouter as Router, Routes, Route  } from "react-router-dom";
 import AdminPage from "./components/AdminPage";
+import MainGame from "./components/MainGame";
 
 // 게임 화면들
 import WelcomeScreen from "./components/WelcomeScreen";
@@ -134,11 +134,11 @@ function MainGame() {
  */
 export default function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<MainGame />} />
         <Route path="/admin" element={<AdminPage />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
