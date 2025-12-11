@@ -7,6 +7,16 @@ import GameHeader from "./GameHeader";
 import toast from "react-hot-toast";
 import "./SurveyGame.css";
 
+// 옵션 문자열을 배열로 변환하는 공용 함수
+const getOptionsArray = (options) => {
+  if (!options) return [];
+  if (Array.isArray(options)) return options;
+  return options
+    .split(/[\|,]/)
+    .map((o) => o.trim())
+    .filter((o) => o.length > 0);
+};
+
 
 const SurveyGame = ({ onComplete }) => {
   const { user, answerQuestion } = useGameStore();
