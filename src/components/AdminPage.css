@@ -1,61 +1,201 @@
-/* 기존 스타일 유지 + 아래 추가 */
+/* ---------- GLOBAL ---------- */
 
-th {
-  cursor: pointer;
-  user-select: none;
+.ap-root {
+  padding: 25px 40px;
+  background: linear-gradient(135deg, #6c63ff 0%, #7b2ff7 100%);
+  min-height: 100vh;
+  color: #fff;
+  font-family: "Inter", "Noto Sans KR", sans-serif;
 }
 
-/* ---------- MODAL POPUP ---------- */
+/* ---------- HEADER ---------- */
+
+.ap-header h1 {
+  font-size: 34px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  text-shadow: 0 3px 6px rgba(0,0,0,0.25);
+}
+
+.ap-filters {
+  display: flex;
+  gap: 18px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.ap-filter-group label {
+  font-size: 13px;
+  margin-bottom: 5px;
+  display: block;
+  opacity: 0.9;
+}
+
+.ap-filter-group input,
+.ap-filter-group select {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  min-width: 160px;
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  font-size: 15px;
+  backdrop-filter: blur(6px);
+}
+
+.ap-filter-group input::placeholder {
+  color: #f0f0f0;
+  opacity: 0.7;
+}
+
+/* ---------- RELOAD BUTTON ---------- */
+
+.ap-btn {
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: #ffffff33;
+  border: 1px solid #ffffff55;
+  cursor: pointer;
+  color: #fff;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.ap-btn:hover {
+  background: #ffffff55;
+}
+
+/* ---------- TABLE ---------- */
+
+.ap-table-wrapper {
+  background: rgba(255,255,255,0.15);
+  padding: 20px;
+  border-radius: 16px;
+  backdrop-filter: blur(5px);
+  border: 1px solid #ffffff33;
+}
+
+.ap-table {
+  width: 100%;
+  border-spacing: 0;
+  color: #fff;
+}
+
+.ap-table th {
+  text-align: left;
+  padding: 14px 10px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+}
+
+.ap-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  font-size: 15px;
+}
+
+.ap-table tr:hover {
+  background: rgba(255,255,255,0.12);
+}
+
+/* ---------- BUTTONS ---------- */
+
+.ap-edit-btn,
+.ap-del-btn {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.ap-edit-btn {
+  background: #00d1ffcc;
+  color: #fff;
+}
+
+.ap-edit-btn:hover {
+  background: #00b3dd;
+}
+
+.ap-del-btn {
+  background: #ff4e6dcc;
+  color: #fff;
+}
+
+.ap-del-btn:hover {
+  background: #e63f5b;
+}
+
+/* ---------- MODAL ---------- */
 
 .ap-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.55);
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.55);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5000;
+  z-index: 999;
 }
 
 .ap-modal {
-  background: #fff;
   width: 450px;
-  padding: 22px;
-  border-radius: 16px;
-  max-height: 85vh;
-  overflow-y: auto;
+  background: rgba(255,255,255,0.9);
+  padding: 25px;
+  border-radius: 18px;
   color: #333;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
 }
 
 .ap-modal h2 {
   margin-top: 0;
   margin-bottom: 15px;
+  font-weight: 700;
 }
 
 .ap-modal label {
   display: block;
-  margin-top: 10px;
-  font-size: 13px;
+  margin-top: 12px;
+  font-size: 14px;
   font-weight: 600;
+  color: #333;
 }
 
 .ap-modal input,
 .ap-modal select,
 .ap-modal textarea {
   width: 100%;
-  padding: 7px;
   margin-top: 5px;
-  border-radius: 8px;
-  border: 1px solid #aaa;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
   font-size: 14px;
+}
+
+.ap-modal textarea {
+  resize: vertical;
 }
 
 .ap-modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 20px;
+}
+
+.ap-btn-primary {
+  background: #6c63ff;
+  color: #fff;
+  border: none;
+}
+
+.ap-btn-primary:hover {
+  background: #5849f2;
 }
