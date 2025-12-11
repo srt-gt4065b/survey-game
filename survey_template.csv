@@ -1,0 +1,7 @@
+id,category,type,en,ko,zh,kk,uz,bn,options
+1,Category1,likert,Question in English,한국어 질문,中文问题,Қазақша сұрақ,O'zbekcha savol,বাংলা প্রশ্ন,"Option 1,Option 2,Option 3,Option 4,Option 5"
+2,Category1,text,Another question,또 다른 질문,另一个问题,Басқа сұрақ,Boshqa savol,অন্য প্রশ্ন,
+3,Category2,multi,Multiple choice question,객관식 질문,多选题,Көп нұсқалы сұрақ,Ko'p tanlovli savol,একাধিক পছন্দের প্রশ্ন,"Choice A,Choice B,Choice C"
+4,Technology,likert,I am satisfied with the technology infrastructure,나는 기술 인프라에 만족한다,我对技术基础设施感到满意,Мен технологиялық инфрақұрылымға қанағаттанамын,Men texnologik infratuzilmadan mamnunman,আমি প্রযুক্তি অবকাঠামোতে সন্তুষ্ট,"Strongly Disagree,Disagree,Neutral,Agree,Strongly Agree"
+5,Teaching,text,What improvements would you suggest for our teaching methods?,우리의 교수법 개선을 위해 어떤 제안을 하시겠습니까?,您对我们的教学方法有什么改进建议?,Оқыту әдістерімізді жақсарту үшін қандай ұсыныстар жасар едіңіз?,O'qitish usullarimizni yaxshilash uchun qanday takliflar berasiz?,আমাদের শিক্ষণ পদ্ধতির উন্নতির জন্য আপনি কি সুপারিশ করবেন?,
+6,Facilities,multi,Which facilities do you use most often?,어떤 시설을 가장 자주 이용하시나요?,您最常使用哪些设施?,Қандай мекемелерді жиі пайдаланасыз?,Qaysi ob'ektlardan eng ko'p foydalanasiz?,আপনি কোন সুবিধাগুলি সবচেয়ে বেশি ব্যবহার করেন?,"Library,Computer Lab,Sports Center,Cafeteria,Study Rooms"
