@@ -1,172 +1,61 @@
-.ap-root {
-  min-height: 100vh;
-  padding: 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-  color: #fff;
-}
+/* 기존 스타일 유지 + 아래 추가 */
 
-.ap-header {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 18px;
-}
-
-.ap-title {
-  font-size: 28px;
-  font-weight: 700;
-}
-
-.ap-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: flex-end;
-}
-
-.ap-filter-group {
-  display: flex;
-  flex-direction: column;
-  font-size: 13px;
-}
-
-.ap-filter-group label {
-  margin-bottom: 2px;
-}
-
-.ap-filter-group input,
-.ap-filter-group select {
-  padding: 5px 8px;
-  border-radius: 6px;
-  border: none;
-  font-size: 14px;
-}
-
-.ap-btn {
-  padding: 7px 12px;
-  border-radius: 999px;
-  border: none;
+th {
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.9);
-  color: #444;
-  font-weight: 500;
-  font-size: 13px;
+  user-select: none;
 }
 
-.ap-btn-primary {
-  background: #00d084;
-  color: #fff;
-}
+/* ---------- MODAL POPUP ---------- */
 
-.ap-btn-secondary {
-  background: #555;
-  color: #fff;
-}
-
-.ap-btn:hover {
-  opacity: 0.92;
-}
-
-.ap-table-wrapper {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
-  padding: 12px;
-  overflow-x: auto;
-}
-
-.ap-table {
+.ap-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-
-.ap-table th,
-.ap-table td {
-  padding: 8px 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.ap-table th {
-  text-align: left;
-  font-weight: 600;
-  background: rgba(0, 0, 0, 0.15);
-}
-
-.ap-icon-btn {
-  border: none;
-  cursor: pointer;
-  border-radius: 8px;
-  padding: 4px 8px;
-  font-size: 14px;
-}
-
-.ap-edit-btn {
-  background: #ffd166;
-}
-
-.ap-del-btn {
-  background: #ff6b6b;
-  color: #fff;
-}
-
-.ap-loading {
-  margin-top: 40px;
-  text-align: center;
-  font-size: 16px;
-}
-
-/* 편집 패널 */
-.ap-edit-panel {
-  margin-top: 18px;
-  padding: 16px;
-  background: rgba(0, 0, 0, 0.35);
-  border-radius: 16px;
-  max-width: 720px;
-}
-
-.ap-edit-panel h3 {
-  margin-top: 0;
-  margin-bottom: 12px;
-}
-
-.ap-edit-panel h3 span {
-  font-weight: 700;
-}
-
-.ap-edit-row {
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
+  align-items: center;
+  justify-content: center;
+  z-index: 5000;
+}
+
+.ap-modal {
+  background: #fff;
+  width: 450px;
+  padding: 22px;
+  border-radius: 16px;
+  max-height: 85vh;
+  overflow-y: auto;
+  color: #333;
+}
+
+.ap-modal h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.ap-modal label {
+  display: block;
+  margin-top: 10px;
   font-size: 13px;
+  font-weight: 600;
 }
 
-.ap-edit-row label {
-  margin-bottom: 3px;
-}
-
-.ap-edit-row input,
-.ap-edit-row select,
-.ap-edit-row textarea {
+.ap-modal input,
+.ap-modal select,
+.ap-modal textarea {
+  width: 100%;
+  padding: 7px;
+  margin-top: 5px;
   border-radius: 8px;
-  border: none;
-  padding: 6px 8px;
+  border: 1px solid #aaa;
   font-size: 14px;
 }
 
-.ap-edit-row textarea {
-  resize: vertical;
-}
-
-.ap-edit-row small {
-  margin-top: 4px;
-  opacity: 0.8;
-}
-
-.ap-edit-actions {
+.ap-modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 10px;
+  margin-top: 18px;
 }
