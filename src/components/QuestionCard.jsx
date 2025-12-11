@@ -85,4 +85,25 @@ const QuestionCard = ({
   );
 };
 
+// Options 배열로 변환 (문자열인 경우 처리)
+const getOptionsArray = (options) => {
+  if (!options) return [];
+  if (Array.isArray(options)) return options;  // 이미 배열이면 그대로
+  
+  if (typeof options === 'string') {
+    // 쉼표로 구분: "Regular,Transfer,Exchange"
+    if (options.includes(',')) {
+      return options.split(',').map(o => o.trim()).filter(Boolean);
+    }
+    // 파이프로 구분: "Regular|Transfer|Exchange"
+    if (options.includes('|')) {
+      return options.split('|').map(o => o.trim()).filter(Boolean);
+    }
+    // 단일 값
+    return [options.trim()];
+  }
+  
+  return [];
+};
+
 export default QuestionCard;
