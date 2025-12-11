@@ -238,64 +238,98 @@ function AdminPage() {
 
       {/* ⭐ Modal Popup for Editing */}
       {editingQuestion && (
-        <div className="ap-modal-overlay" onClick={() => setEditingQuestion(null)}>
-          <div className="ap-modal" onClick={(e) => e.stopPropagation()}>
-            <h2>Edit Question — {editingQuestion.id}</h2>
+  <div className="ap-modal-overlay">
+    <div className="ap-modal">
 
-            <label>ID</label>
-            <input
-              value={editingQuestion.id}
-              onChange={(e) =>
-                setEditingQuestion({ ...editingQuestion, id: e.target.value })
-              }
-            />
+      <h2>Edit Question — {editingQuestion.id}</h2>
 
-            <label>Category</label>
-            <input
-              value={editingQuestion.category}
-              onChange={(e) =>
-                setEditingQuestion({ ...editingQuestion, category: e.target.value })
-              }
-            />
+      {/* ID (수정 불가) */}
+      <label>ID</label>
+      <input 
+        type="text" 
+        value={editData.id}
+        disabled
+      />
 
-            <label>Type</label>
-            <select
-              value={editingQuestion.type}
-              onChange={(e) =>
-                setEditingQuestion({ ...editingQuestion, type: e.target.value })
-              }
-            >
-              <option value="likert">Likert</option>
-              <option value="text">Text</option>
-              <option value="multi">Multi</option>
-            </select>
+      {/* Category */}
+      <label>Category</label>
+      <input
+        type="text"
+        value={editData.category}
+        onChange={(e) =>
+          setEditData({ ...editData, category: e.target.value })
+        }
+      />
 
-            <label>Question ({selectedLanguage})</label>
-            <textarea
-              rows={4}
-              value={editingQuestion.text?.[selectedLanguage] || ""}
-              onChange={(e) =>
-                setEditingQuestion({
-                  ...editingQuestion,
-                  text: {
-                    ...(editingQuestion.text || {}),
-                    [selectedLanguage]: e.target.value,
-                  },
-                })
-              }
-            />
+      {/* Type */}
+      <label>Type</label>
+      <select
+        value={editData.type}
+        onChange={(e) =>
+          setEditData({ ...editData, type: e.target.value })
+        }
+      >
+        <option value="likert">Likert</option>
+        <option value="text">Text</option>
+        <option value="multi">Multi</option>
+      </select>
 
-            <div className="ap-modal-actions">
-              <button className="ap-btn" onClick={() => setEditingQuestion(null)}>
-                Cancel
-              </button>
-              <button className="ap-btn ap-btn-primary" onClick={handleSave}>
-                💾 Save
-              </button>
-            </div>
-          </div>
-        </div>
+      {/* Question Text */}
+      <label>Question ({selectedLanguage})</label>
+      <textarea
+        rows="4"
+        value={editData.question}
+        onChange={(e) =>
+          setEditData({ ...editData, question: e.target.value })
+        }
+      />
+
+      {/* OPTIONS — multi 또는 likert일 때만 표시 */}
+      {(editData.type === "multi" || editData.type === "likert") && (
+        <>
+          <label>
+            Options{" "}
+            <span style={{ fontSize: "12px", opacity: 0.7 }}>
+              (comma-separated)
+            </span>
+          </label>
+          <textarea
+            rows="3"
+            placeholder="예: Option A, Option B, Option C"
+            value={editData.options?.join(", ") || ""}
+            onChange={(e) =>
+              setEditData({
+                ...editData,
+                options: e.target.value
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter((v) => v.length > 0),
+              })
+            }
+          />
+        </>
       )}
+
+      {/* Buttons */}
+      <div className="ap-modal-actions">
+        <button
+          className="ap-btn"
+          onClick={() => setEditingQuestion(null)}
+        >
+          Cancel
+        </button>
+
+        <button
+          className="ap-btn-primary"
+          onClick={handleSave}
+        >
+          💾 Save
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
