@@ -121,32 +121,33 @@ function AdminPage() {
     try {
       await deleteDoc(doc(db, "questions", q.docId));
       setQuestions((prev) => prev.filter((x) => x.docId !== q.docId));
-      toast.success("삭제 완료");
+      toast.success("Elimination complete!");
     } catch (err) {
       console.error(err);
-      toast.error("삭제 실패");
+      toast.error("Error removing questions.");
     }
   };
 
   // 저장
-  const handleSave = async () => {
-    if (!editingQuestion) return;
+ const handleSave = async () => {
+  try {
+    await updateDoc(doc(db, "questions", editingQuestion.id), {
+      category: editData.category,
+      type: editData.type,
+      [selectedLanguage]: editData.question,
+      options: editData.options || []
+    });
 
-    try {
-      const { docId, ...payload } = editingQuestion;
-      await updateDoc(doc(db, "questions", docId), payload);
+    alert("Saved successfully!");
+    setEditingQuestion(null);
+    fetchQuestions(); // 리스트 다시 로드
 
-      setQuestions((prev) =>
-        prev.map((q) => (q.docId === docId ? editingQuestion : q))
-      );
+  } catch (err) {
+    console.error("Save Error:", err);
+    alert("Error saving changes.");
+  }
+};
 
-      toast.success("저장되었습니다!");
-      setEditingQuestion(null);
-    } catch (err) {
-      console.error(err);
-      toast.error("저장 실패");
-    }
-  };
 
   return (
     <div className="ap-root">
