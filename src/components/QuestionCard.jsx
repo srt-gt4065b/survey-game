@@ -13,8 +13,10 @@ const QuestionCard = ({
 
   const { text, type, options, section } = question;
 
-  // Likert 5점 척도
-  const likert = [
+  /** -------------------------------
+   * Likert Scale 옵션 (Emoji 포함)
+   --------------------------------*/
+  const likertScale = [
     "😍 Strongly Agree",
     "🙂 Agree",
     "😐 Neutral",
@@ -22,13 +24,18 @@ const QuestionCard = ({
     "😡 Strongly Disagree",
   ];
 
-  const answerOptions = type === "likert" ? likert :  getOptionsArray(options);
+  /** -------------------------------
+   * 옵션 결정 (likert / 일반 객관식)
+   --------------------------------*/
+  const finalOptions = type === "likert" ? likertScale : normalizeOptions(options);
 
   return (
     <div className="question-card fade-in">
-      {/* 상단 정보 */}
+      
+      {/* ---------- 상단 정보 ---------- */}
       <div className="q-header">
         <div className="q-section">{section}</div>
+
         <div className="q-progress-group">
           <div className="q-progress-chapter">
             Chapter: {questionNumber} / {totalQuestions}
@@ -39,13 +46,13 @@ const QuestionCard = ({
         </div>
       </div>
 
-      {/* 질문 내용 */}
+      {/* ---------- 질문 텍스트 ---------- */}
       <h2 className="q-text">{text}</h2>
 
-      {/* 객관식 옵션들 */}
+      {/* ---------- 객관식 옵션 ---------- */}
       {type !== "text" && (
         <div className="q-options">
-          {answerOptions.map((opt, idx) => (
+          {finalOptions.map((opt, idx) => (
             <button
               key={idx}
               className={`q-option ${selected === opt ? "selected" : ""}`}
@@ -57,7 +64,7 @@ const QuestionCard = ({
         </div>
       )}
 
-      {/* 주관식(텍스트) 질문 */}
+      {/* ---------- 주관식 입력 ---------- */}
       {type === "text" && (
         <textarea
           className="q-textarea"
@@ -67,15 +74,16 @@ const QuestionCard = ({
         />
       )}
 
-      {/* Next 버튼 */}
+      {/* ---------- Next 버튼 ---------- */}
       <div className="q-footer">
         <button
           className={`next-btn ${selected ? "active" : ""}`}
           disabled={!selected}
           onClick={() => {
             if (!selected) return;
-            onAnswer(selected);
-            setSelected("");
+            const answer = selected;
+            setSelected(""); // 먼저 초기화
+            onAnswer(answer); // 부모에 전달
           }}
         >
           Next →
@@ -85,24 +93,20 @@ const QuestionCard = ({
   );
 };
 
-// Options 배열로 변환 (문자열인 경우 처리)
-const getOptionsArray = (options) => {
+/** ------------------------------------------
+ * 옵션 정규화 함수: SurveyGame에서 받은 값이
+ * 배열이든 문자열이든 항상 배열로 변환
+ -------------------------------------------*/
+const normalizeOptions = (options) => {
   if (!options) return [];
-  if (Array.isArray(options)) return options;  // 이미 배열이면 그대로
-  
-  if (typeof options === 'string') {
-    // 쉼표로 구분: "Regular,Transfer,Exchange"
-    if (options.includes(',')) {
-      return options.split(',').map(o => o.trim()).filter(Boolean);
-    }
-    // 파이프로 구분: "Regular|Transfer|Exchange"
-    if (options.includes('|')) {
-      return options.split('|').map(o => o.trim()).filter(Boolean);
-    }
-    // 단일 값
-    return [options.trim()];
+  if (Array.isArray(options)) return options;
+
+  if (typeof options === "string") {
+    return options
+      .split(/[\|,]/)
+      .map((o) => o.trim())
+      .filter((o) => o.length > 0);
   }
-  
   return [];
 };
 
