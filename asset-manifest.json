@@ -1,9 +1,9 @@
 {
   "files": {
     "main.css": "/survey-game/static/css/main.5b624475.css",
-    "main.js": "/survey-game/static/js/main.72bfd659.js",
+    "main.js": "/survey-game/static/js/main.12052a76.js",
     "static/css/952.2433e6fa.chunk.css": "/survey-game/static/css/952.2433e6fa.chunk.css",
-    "static/js/952.d7f4bced.chunk.js": "/survey-game/static/js/952.d7f4bced.chunk.js",
+    "static/js/952.ce34d653.chunk.js": "/survey-game/static/js/952.ce34d653.chunk.js",
     "static/css/979.bf3fe299.chunk.css": "/survey-game/static/css/979.bf3fe299.chunk.css",
     "static/js/979.e3d3e465.chunk.js": "/survey-game/static/js/979.e3d3e465.chunk.js",
     "static/css/236.31d6cfe0.chunk.css": "/survey-game/static/css/236.31d6cfe0.chunk.css",
@@ -12,9 +12,9 @@
     "static/js/556.83cb2c02.chunk.js": "/survey-game/static/js/556.83cb2c02.chunk.js",
     "index.html": "/survey-game/index.html",
     "main.5b624475.css.map": "/survey-game/static/css/main.5b624475.css.map",
-    "main.72bfd659.js.map": "/survey-game/static/js/main.72bfd659.js.map",
+    "main.12052a76.js.map": "/survey-game/static/js/main.12052a76.js.map",
     "952.2433e6fa.chunk.css.map": "/survey-game/static/css/952.2433e6fa.chunk.css.map",
-    "952.d7f4bced.chunk.js.map": "/survey-game/static/js/952.d7f4bced.chunk.js.map",
+    "952.ce34d653.chunk.js.map": "/survey-game/static/js/952.ce34d653.chunk.js.map",
     "979.bf3fe299.chunk.css.map": "/survey-game/static/css/979.bf3fe299.chunk.css.map",
     "979.e3d3e465.chunk.js.map": "/survey-game/static/js/979.e3d3e465.chunk.js.map",
     "236.14529872.chunk.js.map": "/survey-game/static/js/236.14529872.chunk.js.map",
@@ -23,6 +23,6 @@
   },
   "entrypoints": [
     "static/css/main.5b624475.css",
-    "static/js/main.72bfd659.js"
+    "static/js/main.12052a76.js"
   ]
 }
