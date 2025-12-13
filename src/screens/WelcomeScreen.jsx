@@ -128,7 +128,8 @@ const WelcomeScreen = ({ onStart }) => {
           animate={{ scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="game-title">Endicott Survey Game</h1>
+          <h1 className="game-title">2025 Fall Endicott End-of-Semester Student Survey
+</h1>
         </motion.div>
 
         {/* 게임 특징 */}
@@ -256,10 +257,14 @@ const WelcomeScreen = ({ onStart }) => {
             <div className="popup-content">
               <h3>📋 How to Play</h3>
               <ul>
-                <li>🎯 Earn bonus points for quick answers</li>
-                <li>🔥 Get combo bonuses for consecutive answers</li>
-                <li>🏆 Compete with friends on the leaderboard</li>
-                <li>💎 Complete achievements and receive rewards</li>
+                <li>🎯 “Even the smallest tasks must be done with sincerity if we wish to change the world.”
+— Inspired by Mencius</li>
+                <li>🔥 “We see the world more clearly when we stand on the shoulders of giants.”
+— Originally Isaac Newton, often quoted by Steve Jobs</li>
+                <li>🏆 “Doing the same thing while expecting different results is insanity.”
+— Attributed to Albert Einstein (origin disputed)</li>
+                <li>💎 “Never give up. Steady steps will always lead you to the finish line.”
+— Dr. Endicott</li>
               </ul>
               <button 
                 className="popup-close-btn"

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Papa from "papaparse";
-import { db } from "../firebase/firebaseConfig";
+import { db } from "../firebase/config";
 import {
   collection,
   getDocs,

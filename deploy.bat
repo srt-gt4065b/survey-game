@@ -1,21 +1,37 @@
 @echo off
-echo ================================
-echo     Gamified Survey Deploy
-echo ================================
-echo.
+echo ========================================
+echo        Survey Game Auto Deploy
+echo ========================================
 
-echo 🔍 Installing dependencies...
+REM 프로젝트 루트 디렉토리로 이동
+cd /d %~dp0
+
+echo.
+echo 🔄 Installing dependencies...
 npm install
 
 echo.
-echo 🔨 Building React app...
+echo ⚙️  Building project for production...
 npm run build
 
-echo.
-echo 🌐 Deploying to GitHub Pages...
-npm run deploy
+IF %ERRORLEVEL% NEQ 0 (
+    echo ❌ Build failed! Deploy aborted.
+    pause
+    exit /b
+)
 
 echo.
-echo ✅ Deployment complete!
-echo 웹사이트가 성공적으로 업데이트되었습니다.
+echo 🚀 Deploying to GitHub Pages...
+npm run deploy
+
+IF %ERRORLEVEL% NEQ 0 (
+    echo ❌ Deploy failed!
+    pause
+    exit /b
+)
+
+echo.
+echo ========================================
+echo    🎉 Deployment Completed Successfully!
+echo ========================================
 pause
