@@ -3,18 +3,17 @@
   "name": "Gamified Survey System",
   "icons": [
     {
-      "src": "./wsuai.png",
+      "src": "wsuai.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "./ecis.png",
+      "src": "ecis.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "start_url": "/survey-game/",
-  "scope": "/survey-game/",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#ffffff",
   "background_color": "#ffffff"
