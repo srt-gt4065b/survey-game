@@ -299,7 +299,7 @@ const SurveyGame = ({ onComplete }) => {
   // 🔚 전체 설문 완료 시 EndScene 표시
   // --------------------------------
   if (finished) {
-    return <EndScene />;
+    return <EndScene onComplete={onComplete} />;
   }
 
   // --------------------------------

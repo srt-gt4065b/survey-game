@@ -1,68 +1,103 @@
 .end-scene {
   width: 100%;
-  min-height: 70vh;
+  min-height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  background: linear-gradient(135deg, #6a85ff, #8ec5fc);
   padding: 40px 20px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-
   animation: fadeIn 0.6s ease-out;
 }
 
+.end-scene-card {
+  background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
+  border-radius: 28px;
+  padding: 50px 60px;
+  text-align: center;
+  box-shadow: 
+    0 20px 60px rgba(102, 126, 234, 0.2),
+    0 8px 24px rgba(102, 126, 234, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+.celebration-emoji {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
 .end-scene h1 {
-  font-size: 40px;
+  font-size: 36px;
   font-weight: 800;
-  margin-bottom: 15px;
-  color: #fff;
-  text-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .end-scene p {
-  font-size: 20px;
-  color: #f5f5f5;
-  margin-bottom: 30px;
-  opacity: 0.9;
-}
-
-.end-btn,
-.home-btn {
-  padding: 14px 26px;
-  margin: 8px;
-  border-radius: 12px;
-  border: none;
   font-size: 18px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: transform 0.15s, box-shadow 0.15s;
+  color: #4a5568;
+  margin-bottom: 12px;
+  line-height: 1.6;
 }
 
-/* 리더보드 버튼 */
+.end-scene .thank-you {
+  font-size: 16px;
+  color: #718096;
+  margin-bottom: 32px;
+}
+
+.end-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
 .end-btn {
-  background: #ffdd59;
-  color: #5e470a;
-  box-shadow: 0 4px 10px rgba(255, 221, 89, 0.5);
+  padding: 16px 32px;
+  border-radius: 14px;
+  border: none;
+  font-size: 17px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 240px;
+  font-family: inherit;
 }
 
-.end-btn:hover {
+.end-btn.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.end-btn.primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(255, 221, 89, 0.8);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
 }
 
-/* 처음으로 */
-.home-btn {
-  background: #ffffff;
-  color: #555;
-  box-shadow: 0 4px 10px rgba(255,255,255,0.4);
+.end-btn.secondary {
+  background: #fff;
+  color: #667eea;
+  border: 2px solid #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
 }
 
-.home-btn:hover {
+.end-btn.secondary:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-color: transparent;
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(255,255,255,0.7);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
 }
 
 /* 등장 애니메이션 */
@@ -79,15 +114,25 @@
 
 /* 모바일 대응 */
 @media (max-width: 480px) {
-  .end-scene h1 {
-    font-size: 30px;
+  .end-scene-card {
+    padding: 36px 28px;
+    margin: 0 16px;
   }
+  
+  .celebration-emoji {
+    font-size: 60px;
+  }
+  
+  .end-scene h1 {
+    font-size: 28px;
+  }
+  
   .end-scene p {
     font-size: 16px;
   }
-  .end-btn,
-  .home-btn {
+  
+  .end-btn {
     width: 100%;
-    max-width: 260px;
+    min-width: auto;
   }
 }

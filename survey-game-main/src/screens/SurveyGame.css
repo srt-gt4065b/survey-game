@@ -1,0 +1,74 @@
+/* ======================================
+   SurveyGame.css
+====================================== */
+
+.survey-container {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+/* 섹션 정보 바 */
+.survey-info-bar {
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 12px 18px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+/* Jump 버튼 (레거시 호환) */
+.jump-btn {
+  background: rgba(255, 200, 50, 0.45);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 40px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.jump-btn:hover {
+  background: rgba(255, 170, 0, 0.55);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .survey-container {
+    padding: 12px;
+  }
+
+  .survey-info-bar {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .survey-container {
+    padding: 8px;
+  }
+}

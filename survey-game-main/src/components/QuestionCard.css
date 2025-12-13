@@ -1,0 +1,348 @@
+/* ======================================
+   QuestionCard.css - 스크린샷 디자인 매칭
+====================================== */
+
+/* 전체 카드 */
+.question-card {
+  background: linear-gradient(145deg, #f0f4ff 0%, #e8eeff 100%);
+  border-radius: 24px;
+  padding: 32px 36px;
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+  box-shadow: 
+    0 12px 40px rgba(102, 126, 234, 0.2),
+    0 4px 12px rgba(102, 126, 234, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.question-card.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  font-size: 18px;
+  color: #667eea;
+}
+
+/* ======================================
+   상단 섹션 헤더
+====================================== */
+.qc-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(90, 60, 225, 0.15);
+}
+
+.qc-section-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qc-section-number {
+  font-size: 18px;
+  font-weight: 800;
+  color: #5a3ce1;
+}
+
+.qc-section-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.qc-section-progress {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 15px;
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
+}
+
+/* ======================================
+   질문 텍스트
+====================================== */
+.qc-question-text {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 28px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+/* ======================================
+   옵션 버튼 영역
+====================================== */
+.qc-options-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.qc-option-btn {
+  padding: 20px 24px;
+  background: white;
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  border-radius: 16px;
+  text-align: left;
+  font-size: 17px;
+  font-weight: 600;
+  color: #2d3748;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.qc-option-btn::before {
+  content: '';
+  position: absolute;
+  left: -100%;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  transition: left 0.3s ease;
+}
+
+.qc-option-btn:hover {
+  border-color: #8f70ff;
+  background: #f8f6ff;
+  transform: translateX(6px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+}
+
+.qc-option-btn:hover::before {
+  left: 0;
+}
+
+/* 선택된 옵션 */
+.qc-option-btn.selected {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
+  color: white;
+  transform: translateX(6px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.qc-option-btn.selected::before {
+  display: none;
+}
+
+/* ======================================
+   텍스트 입력
+====================================== */
+.qc-textarea {
+  width: 100%;
+  height: 140px;
+  border: 2px solid rgba(102, 126, 234, 0.25);
+  border-radius: 16px;
+  padding: 18px 20px;
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+  margin-bottom: 32px;
+  resize: vertical;
+  background: white;
+  transition: all 0.25s ease;
+}
+
+.qc-textarea:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+}
+
+.qc-textarea::placeholder {
+  color: #a0aec0;
+}
+
+/* ======================================
+   하단 버튼 4개
+====================================== */
+.qc-button-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.qc-btn {
+  padding: 16px 28px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* Back - 보라색 */
+.qc-btn.back {
+  background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(155, 89, 182, 0.35);
+}
+
+.qc-btn.back:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(155, 89, 182, 0.45);
+}
+
+.qc-btn.back:active {
+  transform: translateY(-1px);
+}
+
+/* Skip - 주황색 */
+.qc-btn.skip {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.35);
+}
+
+.qc-btn.skip:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(243, 156, 18, 0.45);
+}
+
+.qc-btn.skip:active {
+  transform: translateY(-1px);
+}
+
+/* Jump - 노랑 테두리 */
+.qc-btn.jump {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+}
+
+.qc-btn.jump:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: transparent;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+}
+
+.qc-btn.jump:active {
+  transform: translateY(-1px);
+}
+
+/* Next - 비활성 (회색) */
+.qc-btn.next {
+  background: #e2e8f0;
+  color: #a0aec0;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Next - 활성 (파란색) */
+.qc-btn.next.enabled {
+  background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(66, 153, 225, 0.35);
+}
+
+.qc-btn.next.enabled:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(66, 153, 225, 0.45);
+}
+
+.qc-btn.next.enabled:active {
+  transform: translateY(-1px);
+}
+
+/* ======================================
+   애니메이션
+====================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.question-card {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* ======================================
+   반응형 디자인
+====================================== */
+@media (max-width: 768px) {
+  .question-card {
+    padding: 24px 20px;
+    margin: 12px;
+    border-radius: 20px;
+  }
+
+  .qc-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .qc-section-number,
+  .qc-section-name {
+    font-size: 16px;
+  }
+
+  .qc-question-text {
+    font-size: 19px;
+  }
+
+  .qc-option-btn {
+    padding: 16px 18px;
+    font-size: 15px;
+  }
+
+  .qc-button-row {
+    flex-wrap: wrap;
+  }
+
+  .qc-btn {
+    flex: 1;
+    min-width: 80px;
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .question-card {
+    padding: 20px 16px;
+  }
+
+  .qc-question-text {
+    font-size: 17px;
+  }
+
+  .qc-button-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .qc-btn {
+    min-width: auto;
+  }
+}
