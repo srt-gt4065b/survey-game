@@ -1,28 +1,28 @@
 {
   "files": {
     "main.css": "/survey-game/static/css/main.5b624475.css",
-    "main.js": "/survey-game/static/js/main.4eadc31e.js",
+    "main.js": "/survey-game/static/js/main.d71a767b.js",
     "static/css/952.2433e6fa.chunk.css": "/survey-game/static/css/952.2433e6fa.chunk.css",
     "static/js/952.ce34d653.chunk.js": "/survey-game/static/js/952.ce34d653.chunk.js",
-    "static/css/979.a6963a03.chunk.css": "/survey-game/static/css/979.a6963a03.chunk.css",
-    "static/js/979.ce4188aa.chunk.js": "/survey-game/static/js/979.ce4188aa.chunk.js",
+    "static/css/979.d22c7c6b.chunk.css": "/survey-game/static/css/979.d22c7c6b.chunk.css",
+    "static/js/979.57f64e6a.chunk.js": "/survey-game/static/js/979.57f64e6a.chunk.js",
     "static/css/236.31d6cfe0.chunk.css": "/survey-game/static/css/236.31d6cfe0.chunk.css",
     "static/js/236.14529872.chunk.js": "/survey-game/static/js/236.14529872.chunk.js",
     "static/js/81.69e56d96.chunk.js": "/survey-game/static/js/81.69e56d96.chunk.js",
     "static/js/556.83cb2c02.chunk.js": "/survey-game/static/js/556.83cb2c02.chunk.js",
     "index.html": "/survey-game/index.html",
     "main.5b624475.css.map": "/survey-game/static/css/main.5b624475.css.map",
-    "main.4eadc31e.js.map": "/survey-game/static/js/main.4eadc31e.js.map",
+    "main.d71a767b.js.map": "/survey-game/static/js/main.d71a767b.js.map",
     "952.2433e6fa.chunk.css.map": "/survey-game/static/css/952.2433e6fa.chunk.css.map",
     "952.ce34d653.chunk.js.map": "/survey-game/static/js/952.ce34d653.chunk.js.map",
-    "979.a6963a03.chunk.css.map": "/survey-game/static/css/979.a6963a03.chunk.css.map",
-    "979.ce4188aa.chunk.js.map": "/survey-game/static/js/979.ce4188aa.chunk.js.map",
+    "979.d22c7c6b.chunk.css.map": "/survey-game/static/css/979.d22c7c6b.chunk.css.map",
+    "979.57f64e6a.chunk.js.map": "/survey-game/static/js/979.57f64e6a.chunk.js.map",
     "236.14529872.chunk.js.map": "/survey-game/static/js/236.14529872.chunk.js.map",
     "81.69e56d96.chunk.js.map": "/survey-game/static/js/81.69e56d96.chunk.js.map",
     "556.83cb2c02.chunk.js.map": "/survey-game/static/js/556.83cb2c02.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.5b624475.css",
-    "static/js/main.4eadc31e.js"
+    "static/js/main.d71a767b.js"
   ]
 }
