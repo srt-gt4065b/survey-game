@@ -1,28 +1,28 @@
 {
   "files": {
     "main.css": "/survey-game/static/css/main.391900a1.css",
-    "main.js": "/survey-game/static/js/main.ed6a3a28.js",
+    "main.js": "/survey-game/static/js/main.e4c87d2e.js",
     "static/css/544.5d99a5b6.chunk.css": "/survey-game/static/css/544.5d99a5b6.chunk.css",
     "static/js/544.f3fa1d86.chunk.js": "/survey-game/static/js/544.f3fa1d86.chunk.js",
     "static/css/357.6521ca34.chunk.css": "/survey-game/static/css/357.6521ca34.chunk.css",
-    "static/js/357.72c699cb.chunk.js": "/survey-game/static/js/357.72c699cb.chunk.js",
+    "static/js/357.689a1f47.chunk.js": "/survey-game/static/js/357.689a1f47.chunk.js",
     "static/css/515.31d6cfe0.chunk.css": "/survey-game/static/css/515.31d6cfe0.chunk.css",
     "static/js/515.199da38a.chunk.js": "/survey-game/static/js/515.199da38a.chunk.js",
     "static/js/182.ac20fd63.chunk.js": "/survey-game/static/js/182.ac20fd63.chunk.js",
     "static/js/556.83cb2c02.chunk.js": "/survey-game/static/js/556.83cb2c02.chunk.js",
     "index.html": "/survey-game/index.html",
     "main.391900a1.css.map": "/survey-game/static/css/main.391900a1.css.map",
-    "main.ed6a3a28.js.map": "/survey-game/static/js/main.ed6a3a28.js.map",
+    "main.e4c87d2e.js.map": "/survey-game/static/js/main.e4c87d2e.js.map",
     "544.5d99a5b6.chunk.css.map": "/survey-game/static/css/544.5d99a5b6.chunk.css.map",
     "544.f3fa1d86.chunk.js.map": "/survey-game/static/js/544.f3fa1d86.chunk.js.map",
     "357.6521ca34.chunk.css.map": "/survey-game/static/css/357.6521ca34.chunk.css.map",
-    "357.72c699cb.chunk.js.map": "/survey-game/static/js/357.72c699cb.chunk.js.map",
+    "357.689a1f47.chunk.js.map": "/survey-game/static/js/357.689a1f47.chunk.js.map",
     "515.199da38a.chunk.js.map": "/survey-game/static/js/515.199da38a.chunk.js.map",
     "182.ac20fd63.chunk.js.map": "/survey-game/static/js/182.ac20fd63.chunk.js.map",
     "556.83cb2c02.chunk.js.map": "/survey-game/static/js/556.83cb2c02.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.391900a1.css",
-    "static/js/main.ed6a3a28.js"
+    "static/js/main.e4c87d2e.js"
   ]
 }
